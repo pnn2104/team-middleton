@@ -6,31 +6,31 @@ module.exports = {
   entry: `${SRC_DIR}/index.jsx`,
   output: {
     filename: 'bundle.js',
-    path: DIST_DIR
+    path: DIST_DIR,
   },
-  module : {
-    loaders : [
+  module: {
+    loaders: [
       {
-        test : /\.jsx?/,
-        include : SRC_DIR,
-        loader : 'babel-loader',      
+        test: /\.jsx?/,
+        include: SRC_DIR,
+        loader: 'babel-loader',
         query: {
-          presets: ['react', 'es2015']
-       }
-      }, 
+          presets: ['react', 'es2015'],
+        },
+      },
       {
         test: /\.css$/,
-        use: [ 'style-loader', 'css-loader' ]
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(png|jpg|gif)$/,
         use: [
           {
             loader: 'file-loader',
-            options: {}  
-          }
-        ]
+            options: {},
+          },
+        ],
       },
-    ]
-  }
+    ],
+  },
 };
