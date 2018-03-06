@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import TaskList from './TaskList.jsx';
 import YelpList from './YelpList.jsx';
+import Community from './Community.jsx';
 
 const Moving = (props) => (
   <Router>
@@ -13,11 +14,14 @@ const Moving = (props) => (
         <li>
           <Link to="/service">Services</Link>
         </li>
+        <li>
+          <Link to="/community">Community</Link>
+        </li>
       </ul>
       <button id="logout" onClick={props.logout}>Log Out</button>
       <Route exact path="/" component={TaskList}/>
-
       <Route path="/service" component={YelpList} />
+      <Route path="/community" component={Community} />
 
     </div>
   </Router>
