@@ -232,6 +232,22 @@ app.get('/yelpRequest', checkSession, (req, res) => {
   })
 })
 
+const parseWeatherData = data => data.data;
+
+
+app.post('/weather', (request, response) => {
+  const {lat, lng, dateInUnix} = request.body;
+  const url = `https://api.darksky.net/forecast/${
+    process.env.DARK_SKY_API_KEY
+  }/${lat},${lng},${dateInUnix}`;
+
+  axios
+    .get(url)
+    .then(results => response.send(JSON.stringify(parseWeatherData(results))))
+    .catch(err => {
+      console.log(err);
+    });
+});
 app.listen(process.env.PORT || 3000, function() {
   console.log(`listening on port ${process.env.PORT || '3000'}!`);
 });
