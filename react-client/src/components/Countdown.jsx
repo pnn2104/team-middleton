@@ -1,20 +1,22 @@
 import React, {Component} from 'react';
 //import Weather from './Weather.js';
 import moment from 'moment';
+import axios from 'axios';
 
 class Countdown extends Component {
   constructor(props) {
     super(props);
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.updateWeather = this.updateWeather.bind(this);
 
     // TODO: ZIP can be obtained from user model
     this.state = {
       edit: true,
       date: null,
       countdownString: '',
-      //zip: '',
-      //weatherData: null,
+      zip: '',
+      weatherData: null,
     };
   }
 
@@ -30,13 +32,23 @@ class Countdown extends Component {
       let targetDate = moment(this.state.date);
       let differenceDate = moment.duration(currentDate.diff(targetDate));
       let countdownString = differenceDate.humanize();
+      this.updateWeather(targetDate);
       this.setState({
         date: '',
         countdownString,
         edit: false,
-        //displayWeather: true,
       });
     }
+  }
+
+  updateWeather(date, lat = '40.6976637', lng = '-74.1197639') {
+    //const isoDateString = date.toISOString();
+    const dateInUnix = date.unix();
+    axios
+      .post('/weather', {lat, lng, dateInUnix})
+      .then(results =>
+        this.setState({weatherData: results.data.currently.summary}),
+      );
   }
 
   render() {
@@ -44,11 +56,11 @@ class Countdown extends Component {
       <div style={{borderRadius: '2px'}}>
         {this.state.edit ? (
           <div>
-            {/*<input
+            <input
               placeholder="zip"
               type="text"
               onChange={ev => this.setState({zip: ev.target.value})}
-            />*/}
+            />
             <input
               placeholder="date"
               type="text"
@@ -59,7 +71,8 @@ class Countdown extends Component {
         ) : (
           <div>
             <h3>{this.state.countdownString}</h3>
-            <input type="submit" value="Edit" onClick={this.handleSubmit} />
+            <button onClick={this.handleSubmit}>Edit!</button>
+            <h3>Weather will be {this.state.weatherData}</h3>
           </div>
         )}
       </div>
