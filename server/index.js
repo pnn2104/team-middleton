@@ -206,6 +206,24 @@ app.get('/zipcode', checkSession, (req, res) => {
   )
 })
 
+app.post('/newpost', (req, res)=>{
+  let postData = req.body.newListing
+  db.connection.query(`INSERT into communitypost (user_id, title, description, category, price, isdonated, zipcode) VALUES (1, "${postData.title}", "${postData.description}", "${postData.category}", "${postData.price}","${postData.isdonated}", "${postData.zipcode}")`,
+    function(err, data) {
+      if(err) console.error(err)
+      res.status(200).end()
+    })
+})
+
+
+
+app.get('/categories', (req, res) =>{
+  db.connection.query(`SELECT description FROM communitycategory`, (err,data) =>{
+    if(err) console.error(err)
+    res.status(200).send(data)
+  })
+})
+
 app.get('/yelpRequest', checkSession, (req, res) => {
   // this gets back business from yelp based on the item searched from the dropdown in services
   // as well as the user's zip code
