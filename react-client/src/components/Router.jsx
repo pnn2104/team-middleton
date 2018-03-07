@@ -25,6 +25,7 @@ const Moving = (props) => (
       <button id="logout" onClick={props.logout}>Log Out</button>
       <Route exact path="/" component={TaskList}/>
       <Route path="/service" component={YelpList} />
+      <Route path="/community" component={Community} />
       <Route path="/mylistings" component={myListings} />
 
     </div>

@@ -266,7 +266,7 @@ app.get('/userPosts', checkSession, (req, res) => {
       }
       console.log(parsedData)
       res.status(200).send(parsedData);
-    },
+    }
   );
 });
 
