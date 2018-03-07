@@ -71,7 +71,7 @@ class Countdown extends Component {
         ) : (
           <div>
             <h3>{this.state.countdownString}</h3>
-            <button onClick={this.handleSubmit}>Edit!</button>
+            <input type="submit" value="Edit" onClick={this.handleSubmit} />
             <h3>Weather will be {this.state.weatherData}</h3>
           </div>
         )}
