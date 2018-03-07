@@ -6,6 +6,29 @@ var db = require('../database-mysql');
 var APIKey = process.env.API_KEY || require('./yelpAPI.js').yelpAPI;
 var utilsMethods = require('./utils.js');
 var axios = require('axios');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
+const aws = require('aws-sdk');
+
+aws.config.update({
+    secretAccessKey: '/Y+qnTBGnfpFiRWoJh6X/Mbl19O4cAut3vpS1//U',
+    accessKeyId: 'AKIAJXYWBNHV4ON7KGGQ',
+    region: 'us-east-1'
+});
+const s3 = new aws.S3();
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: 'postlistingimages',
+    key: function(req, file, cb) {
+      cb(null, `${new Date()}-${file.originalname}`);
+    }
+  })
+});
+
+
+
+
 
 var app = express();
 app.use(express.static(__dirname + '/../react-client/dist'));
@@ -206,10 +229,15 @@ app.get('/zipcode', checkSession, (req, res) => {
   )
 })
 
-app.post('/newpost', (req, res)=>{
-  let postData = req.body.newListing
-  db.connection.query(`INSERT into communitypost (user_id, title, description, category, price, isdonated, zipcode) VALUES (1, "${postData.title}", "${postData.description}", "${postData.category}", "${postData.price}","${postData.isdonated}", "${postData.zipcode}")`,
-    function(err, data) {
+app.post('/newpost', upload.any(), (req, res)=>{
+  let postData = req.body
+  let queryString = `INSERT into communitypost (user_id, title, description, category, price, isdonated, zipcode) VALUES (1, "${postData.title}", "${postData.description}", "${postData.category}", "${postData.price}","${postData.isdonated}", "${postData.zipcode}")`
+  if(req.files.length > 0){
+    imageUrls = req.files.map(photo => photo.location)
+    let stringURLS = `[${imageUrls.join('.')}]`
+    queryString = `INSERT into communitypost (user_id, title, description, category, price, isdonated, zipcode, image) VALUES (1, "${postData.title}", "${postData.description}", "${postData.category}", "${postData.price}","${postData.isdonated}", "${postData.zipcode}", "${stringURLS}")`
+  }
+  db.connection.query(queryString, function(err, data) {
       if(err) console.error(err)
       res.status(200).end()
     })
