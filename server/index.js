@@ -234,7 +234,6 @@ app.get('/yelpRequest', checkSession, (req, res) => {
 
 const parseWeatherData = data => data.data;
 
-
 app.post('/weather', (request, response) => {
   const {lat, lng, dateInUnix} = request.body;
   const url = `https://api.darksky.net/forecast/${
@@ -243,11 +242,23 @@ app.post('/weather', (request, response) => {
 
   axios
     .get(url)
-    .then(results => response.send(JSON.stringify(parseWeatherData(results))))
+    .then(results => response.send(parseWeatherData(results)))
     .catch(err => {
       console.log(err);
     });
 });
+
+app.post('/geocoder', (request, response) => {
+  const {zip} = request.body;
+  const base = `https://maps.googleapis.com/maps/api/geocode/json`;
+  const extras = `?address=${zip}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+  const url = base + extras;
+  axios
+    .get(url)
+    .then(results => response.send(results.data.results[0].geometry.location))
+    .catch(err => console.log(err));
+});
+
 app.listen(process.env.PORT || 3000, function() {
   console.log(`listening on port ${process.env.PORT || '3000'}!`);
 });
