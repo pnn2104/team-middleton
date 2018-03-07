@@ -194,3 +194,32 @@ button {
 	display: inline;
 	float: right;
 }
+
+* community board*/
+.community-board {
+	margin-top: 50px;
+	margin-left: 50px;
+	width: 800px;
+	overflow: hidden;
+}
+
+/* listing components that lives inside of community board */
+.listing-title {
+	height: 75px;
+}
+.listing-title img {
+	float: left;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	height: 90px;
+	width: 150px;
+}
+
+.listing-title img:hover {
+	box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+}
+
+.listing-title h3 {
+	margin-left: 180px;
+	margin-top: 0px;
+}
