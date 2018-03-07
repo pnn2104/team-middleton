@@ -1,10 +1,6 @@
 import React from 'react';
 import ListingModal from './ListingModal.jsx';
 
-const myImages = data.image[0]
-  .slice(1, featuredItem.photoUrl.length - 1)
-  .split(',');
-
 class Listing extends React.Component {
   constructor(props) {
     super(props);
