@@ -206,6 +206,31 @@ app.get('/zipcode', checkSession, (req, res) => {
   )
 })
 
+app.post('/newpost', (req, res)=>{
+  let postData = req.body.newListing
+  db.connection.query(`INSERT into communitypost (user_id, title, description, category, price, isdonated, zipcode) VALUES (1, "${postData.title}", "${postData.description}", "${postData.category}", "${postData.price}","${postData.isdonated}", "${postData.zipcode}")`,
+    function(err, data) {
+      if(err) console.error(err)
+      res.status(200).end()
+    })
+})
+
+
+app.get('/categories', (req, res) =>{
+  db.connection.query(`SELECT description FROM communitycategory`, (err,data) =>{
+    if(err) console.error(err)
+    res.status(200).send(data)
+  })
+})
+
+
+app.get('/userPosts', (req, res) =>{
+  db.connection.query(`SELECT * FROM communitypost WHERE user_id="1"`, (err,data) =>{
+    if(err) console.error(err)
+    res.status(200).send(data)
+  })
+})
+
 app.get('/yelpRequest', checkSession, (req, res) => {
   // this gets back business from yelp based on the item searched from the dropdown in services
   // as well as the user's zip code
@@ -231,6 +256,33 @@ app.get('/yelpRequest', checkSession, (req, res) => {
     console.error(err)
   })
 })
+
+const parseWeatherData = data => data.data;
+
+app.post('/weather', (request, response) => {
+  const {lat, lng, dateInUnix} = request.body;
+  const url = `https://api.darksky.net/forecast/${
+    process.env.DARK_SKY_API_KEY
+  }/${lat},${lng},${dateInUnix}`;
+
+  axios
+    .get(url)
+    .then(results => response.send(parseWeatherData(results)))
+    .catch(err => {
+      console.log(err);
+    });
+});
+
+app.post('/geocoder', (request, response) => {
+  const {zip} = request.body;
+  const base = `https://maps.googleapis.com/maps/api/geocode/json`;
+  const extras = `?address=${zip}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+  const url = base + extras;
+  axios
+    .get(url)
+    .then(results => response.send(results.data.results[0].geometry.location))
+    .catch(err => console.log(err));
+});
 
 app.listen(process.env.PORT || 3000, function() {
   console.log(`listening on port ${process.env.PORT || '3000'}!`);

@@ -8,6 +8,7 @@ import Login from './components/Login.jsx';
 import Signup from './components/Signup.jsx';
 import Moving from './components/Router.jsx';
 import logo from '../dist/fullLogo.png';
+import UserListings from './components/myListings.jsx'
 
 
 class App extends React.Component {

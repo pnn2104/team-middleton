@@ -189,7 +189,12 @@ button {
 	grid-column: 1/6;
 }
 
-/* community board*/
+.form-container{
+	position: absolute;
+	display: inline;
+	float: right;
+}
+
 .community-board {
 	margin-top: 50px;
 	margin-left: 50px;
@@ -217,7 +222,6 @@ button {
 	margin-left: 180px;
 	margin-top: 0px;
 }
-
 
 /* Modal Slideshow */
 html.modal-slideshow--opened {
@@ -362,4 +366,6 @@ html.modal-slideshow--opened {
 	  width: 100%;
 	  margin: 0 0 24px; }
 	.modal-slideshow__controls {
-	  opacity: 1; } }
+	  opacity: 1; 
+	}
+}

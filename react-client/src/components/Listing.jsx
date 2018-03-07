@@ -14,7 +14,7 @@ class Listing extends React.Component {
 						<img src={this.props.listing.image[0]} />
 					</a>
 					<h3>{this.props.listing.title}</h3>
-					
+
 				</div>
 				<p>{this.props.listing.description}</p>
 				<p>Price: {this.props.listing.price}</p>
