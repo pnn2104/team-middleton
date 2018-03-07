@@ -1,20 +1,7 @@
 import React, { Component } from 'react'
 import ModalPopover from './PostModal.jsx'
+import Listing from './Listing.jsx'
 import axios from 'axios'
-import Modal from 'react-modal';
-
-const customStyles = {
-  content : {
-  	height: `20%`,
-  	width: `20%`,
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
-};
 
 export default class Input  extends Component {
 	constructor(props){
@@ -33,7 +20,10 @@ export default class Input  extends Component {
 	}
 
 	getPosts(){
-
+		axios.get('/userPosts')
+			 .then((data) => {
+			 	this.setState({posts: data.data})
+			 })
 	}
 
 	updateViewableModal(){
@@ -46,6 +36,11 @@ export default class Input  extends Component {
 			<div className="mylistings-container">
 				<h1>MyListings</h1>
 				<ModalPopover />
+				<div className="community-board">
+				{
+					this.state.posts.map((item, i) => <Listing key={i} listing={item} />)
+				}
+				</div>
 			</div>
 		)
 	}

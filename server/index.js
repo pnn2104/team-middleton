@@ -216,9 +216,16 @@ app.post('/newpost', (req, res)=>{
 })
 
 
-
 app.get('/categories', (req, res) =>{
   db.connection.query(`SELECT description FROM communitycategory`, (err,data) =>{
+    if(err) console.error(err)
+    res.status(200).send(data)
+  })
+})
+
+
+app.get('/userPosts', (req, res) =>{
+  db.connection.query(`SELECT * FROM communitypost WHERE user_id="1"`, (err,data) =>{
     if(err) console.error(err)
     res.status(200).send(data)
   })
