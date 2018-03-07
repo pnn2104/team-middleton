@@ -44,6 +44,7 @@ app.use(session({
 }));
 
 var checkSession = function(req, res, next) {
+  console.log(req.session);
   if (req.session.userId) {
     next()
   } else {
@@ -231,11 +232,11 @@ app.get('/zipcode', checkSession, (req, res) => {
 
 app.post('/newpost', upload.any(), (req, res)=>{
   let postData = req.body
-  let queryString = `INSERT into communitypost (user_id, title, description, category, price, isdonated, zipcode) VALUES (1, "${postData.title}", "${postData.description}", "${postData.category}", "${postData.price}","${postData.isdonated}", "${postData.zipcode}")`
+  let queryString = `INSERT into communitypost (user_id, title, description, category, price, isdonated, zipcode) VALUES (${req.session.userId}, "${postData.title}", "${postData.description}", "${postData.category}", "${postData.price}","${postData.isdonated}", "${postData.zipcode}")`
   if(req.files.length > 0){
     imageUrls = req.files.map(photo => photo.location)
-    let stringURLS = `[${imageUrls.join('.')}]`
-    queryString = `INSERT into communitypost (user_id, title, description, category, price, isdonated, zipcode, image) VALUES (1, "${postData.title}", "${postData.description}", "${postData.category}", "${postData.price}","${postData.isdonated}", "${postData.zipcode}", "${stringURLS}")`
+    let stringURLS = `[${imageUrls.join(',')}]`
+    queryString = `INSERT into communitypost (user_id, title, description, category, price, isdonated, zipcode, image) VALUES (${req.session.userId}, "${postData.title}", "${postData.description}", "${postData.category}", "${postData.price}","${postData.isdonated}", "${postData.zipcode}", "${stringURLS}")`
   }
   db.connection.query(queryString, function(err, data) {
       if(err) console.error(err)
@@ -251,13 +252,23 @@ app.get('/categories', (req, res) =>{
   })
 })
 
+app.get('/userPosts', checkSession, (req, res) => {
+  db.connection.query(
+    `SELECT * FROM communitypost WHERE user_id="${req.session.userId}"`,
+    (err, data) => {
+      console.log(data);
+      if (err) console.error(err);
 
-app.get('/userPosts', (req, res) =>{
-  db.connection.query(`SELECT * FROM communitypost WHERE user_id="1"`, (err,data) =>{
-    if(err) console.error(err)
-    res.status(200).send(data)
-  })
-})
+      const parsedData = JSON.parse(JSON.stringify(data));
+      console.log(parsedData)
+      for (let datum of parsedData) {
+        datum.image = datum.image.slice(1, -1).split(',');
+      }
+      console.log(parsedData)
+      res.status(200).send(parsedData);
+    },
+  );
+});
 
 app.get('/yelpRequest', checkSession, (req, res) => {
   // this gets back business from yelp based on the item searched from the dropdown in services
