@@ -12,7 +12,7 @@ export default class Input extends Component {
 			isDonation: false,
 			price: '',
 			zipcode: '',
-			photo: '',
+			photo: null,
 			categories: []
 		}
 		this.handleTitle = this.handleTitle.bind(this)
@@ -21,7 +21,7 @@ export default class Input extends Component {
 		this.handleDonation = this.handleDonation.bind(this)
 		this.handlePrice = this.handlePrice.bind(this)
 		this.handleZipCode = this.handleZipCode.bind(this)
-		this.handlePhoto = this.handlePhoto.bind(this)
+		this.handlePhotoFile = this.handlePhotoFile.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.getCategories = this.getCategories.bind(this)
 	}
@@ -64,13 +64,26 @@ export default class Input extends Component {
 			zipcode: e.target.value
 		})
 	}
-	handlePhoto(){}
-	handleSubmit(){
-		var newListing = {title: this.state.title, description: this.state.description, 
-			category: this.state.category, isDonation: this.state.isDonation,
-			price: this.state.price, zipcode: this.state.zipcode, photo: this.state.photo
-		}
-		axios.post('/newpost', {newListing})
+	handlePhotoFile(e){
+		this.setState({
+			photo: e.target.files
+		}, () => console.log(this.state.photo))
+	}
+
+	handleSubmit(e){
+		e.preventDefault()
+		let newListing = new FormData()
+		newListing.append('title',this.state.title)
+    	newListing.append('description',this.state.description)
+    	newListing.append('price',this.state.price)
+    	newListing.append('isDonation',this.state.isDonation)
+    	newListing.append('category',this.state.category)
+    	if (this.state.photo !== null) {
+      			for(let key in this.state.photo){
+      				newListing.append('photo', this.state.photo[key])
+      			}
+    	} 
+		axios.post('/newpost', newListing)
 		     .then((this.setState({
 		     	title: '',
 		     	description: '',
@@ -78,7 +91,7 @@ export default class Input extends Component {
 		     	isDonation: '',
 		     	price: '',
 		     	zipcode: '',
-		     	photo: ''
+		     	photo: null
 		     })))
 	}
 
@@ -103,6 +116,7 @@ export default class Input extends Component {
             					}
           				</select>
         				</label>
+        				<input name="img" type="file" multiple onChange={this.handlePhotoFile}/>
 						<button onClick={this.handleSubmit}> Click Me</button>
 					</form>
 				</div>
