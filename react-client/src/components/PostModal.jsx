@@ -77,6 +77,7 @@ export default class Input extends Component {
     	newListing.append('description',this.state.description)
     	newListing.append('price',this.state.price)
     	newListing.append('isDonation',this.state.isDonation)
+    	newListing.append('username', JSON.parse(sessionStorage.getItem('user')))
     	newListing.append('category',this.state.category)
     	if (this.state.photo !== null) {
       			for(let key in this.state.photo){
@@ -98,28 +99,42 @@ export default class Input extends Component {
 	render(){
 		return(
 			<div className="form-container">
-					<form>
+				<form>
+					<div className="form-title">
 						<input type="text" value={this.state.title} placeholder="Title" onChange={this.handleTitle} />
-						<input type="text" value={this.state.description} placeholder="Description" onChange={this.handleDescription} />
+					</div>
+					<div className="form-price">
 						<input type="text" value={this.state.price} placeholder="Price" onChange={this.handlePrice} />
+					</div>
+					<div className="form-zipcode">
 						<input type="text" value={this.state.zipcode} placeholder="Zip Code" onChange={this.handleZipCode} />
-						<label>
-          					<select value={this.state.isDonation} onChange={this.handleDonation}>
-            					<option value="true">Yes</option>
-            					<option value="false">No</option>
-          					</select>
-        				</label>
-						<label>
-          				<select value={this.state.category} onChange={this.handleCategory}>
-            					{
-            						this.state.categories.map((cat, i) => <option key={i} value={cat.description}>{cat.description}</option>)
-            					}
-          				</select>
-        				</label>
+					</div>
+					<div className="form-dropdowns">
+						<div className="form-donation-drop">
+	          				<select value={this.state.isDonation} onChange={this.handleDonation}>
+	            				<option value="true">Yes</option>
+	            				<option value="false">No</option>
+	          				</select>
+	          			</div>
+	          			<div className="form-category-drop">
+	          				<select value={this.state.category} onChange={this.handleCategory}>
+	            				{
+	            					this.state.categories.map((cat, i) => <option key={i} value={cat.description}>{cat.description}</option>)
+	            				}
+	          				</select>
+	          			</div>
+         			</div>
+        			<div>
+        				<input type="text" value={this.state.description} placeholder="Description" onChange={this.handleDescription} />
+        			</div>
+        			<div>
         				<input name="img" type="file" multiple onChange={this.handlePhotoFile}/>
-						<button onClick={this.handleSubmit}> Click Me</button>
-					</form>
-				</div>
+        			</div>
+        			<div>
+						<button className="form-submit" onClick={this.handleSubmit}> Click Me</button>
+					</div>
+				</form>
+			</div>
 		)
 	}
 }
