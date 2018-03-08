@@ -17,6 +17,7 @@ export default class Input extends Component {
     this.getPosts = this.getPosts.bind(this);
     this.updateViewableModal = this.updateViewableModal.bind(this);
     this.handleModal = this.handleModal.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   componentDidMount() {
@@ -27,6 +28,13 @@ export default class Input extends Component {
     axios.get('/userPosts').then(data => {
       this.setState({posts: data.data});
     });
+  }
+
+  handleDelete(id){
+    axios.post('/deletepost', {id: id})
+         .then((done) =>{
+            this.getPosts()
+         })
   }
 
   updateViewableModal() {
@@ -41,25 +49,24 @@ export default class Input extends Component {
 
   render() {
     return (
-      <div className="post-botton">
-      <button onClick={this.handleModal}> Click Me </button>
-      <Modal 
-        visible={this.state.modalVisible}
-        width="550"
-        height="475"
-        effect="fadeInUp"
-        onClickAway={() => this.handleModal()}
-        >
-        <div className="user-modal">
-         <a className="user-modal-close" href="javascript:void(0);" onClick={() => this.handleModal()}>X</a>
-          <h1 className="user-modal-title">Create a Post</h1>
-          <ModalPopover />
-        </div>
+
+        <div className="post-botton">
+          <button onClick={this.handleModal}> Click Me </button>
+
+        <Modal 
+          visible={this.state.modalVisible}
+          width="550"
+          height="475"
+          effect="fadeInUp"
+          onClickAway={() => this.handleModal()}
+          >
+            <div className="user-modal">
+              <a className="user-modal-close" href="javascript:void(0);" onClick={() => this.handleModal()}>X</a>
+              <h1 className="user-modal-title">Create a Post</h1>
+              <ModalPopover />
+            </div>
         </Modal>
-          {this.state.posts.map((item, i) => (
-            <Listing key={i} listing={item} />
-          ))}
-      </div>
+        </div>
     );
   }
 }

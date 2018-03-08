@@ -270,6 +270,15 @@ app.get('/userPosts', checkSession, (req, res) => {
   );
 });
 
+app.post('/deletepost', checkSession, (req, res) =>{
+  let id = req.body.id
+  db.connection.query(`DELETE FROM communitypost WHERE id=${id}`, 
+    (err,data) =>{
+      if(err) console.error(err)
+      res.end()
+    })
+})
+
 app.get('/yelpRequest', checkSession, (req, res) => {
   // this gets back business from yelp based on the item searched from the dropdown in services
   // as well as the user's zip code

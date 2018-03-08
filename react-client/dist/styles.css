@@ -299,6 +299,10 @@ button {
 	text-align: center;
 }
 /* listing components that lives inside of community board */
+.listing{
+	padding: 10px 15px 15px 15px;
+}
+
 .listing-title {
 	height: 75px;
 }
@@ -317,6 +321,12 @@ button {
 .listing-title h3 {
 	margin-left: 180px;
 	margin-top: 0px;
+}
+
+.listing button{
+	position: relative;
+	display: inline;
+	float: right;
 }
 
 /* Modal Slideshow */
