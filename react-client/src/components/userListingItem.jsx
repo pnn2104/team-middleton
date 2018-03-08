@@ -1,11 +1,11 @@
 import React from 'react';
 import ListingModal from './ListingModal.jsx';
+import axios from 'axios'
 
 class Listing extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
   }
-
   render() {
     return (
       <div
@@ -19,7 +19,7 @@ class Listing extends React.Component {
         </div>
         <p>{this.props.listing.description}</p>
         <p>Price: {this.props.listing.price}</p>
-        <p>Contact: {this.props.listing.username}</p>
+        <button onClick={() => this.props.handleDelete(this.props.listing.id)} >Delete Post</button>
       </div>
     );
   }
