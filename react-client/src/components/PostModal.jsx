@@ -103,31 +103,33 @@ export default class Input extends Component {
 					<div className="form-title">
 						<input type="text" value={this.state.title} placeholder="Title" onChange={this.handleTitle} />
 					</div>
-					<div className="form-price">
+					<div className="form-description ">
+        				<input type="text" value={this.state.description} placeholder="Description" onChange={this.handleDescription} />
+        			</div>
+        			<div className="form-data">
+					<span className="form-price">
 						<input type="text" value={this.state.price} placeholder="Price" onChange={this.handlePrice} />
-					</div>
-					<div className="form-zipcode">
+					</span>
+					<span className="form-zipcode">
 						<input type="text" value={this.state.zipcode} placeholder="Zip Code" onChange={this.handleZipCode} />
+					</span>
 					</div>
 					<div className="form-dropdowns">
-						<div className="form-donation-drop">
-	          				<select value={this.state.isDonation} onChange={this.handleDonation}>
-	            				<option value="true">Yes</option>
-	            				<option value="false">No</option>
-	          				</select>
-	          			</div>
-	          			<div className="form-category-drop">
+	          			<span className="form-category-drop">
 	          				<select value={this.state.category} onChange={this.handleCategory}>
 	            				{
 	            					this.state.categories.map((cat, i) => <option key={i} value={cat.description}>{cat.description}</option>)
 	            				}
 	          				</select>
-	          			</div>
+	          			</span>
+	          			<span className="form-donation-drop">
+	          				<select value={this.state.isDonation} onChange={this.handleDonation}>
+	            				<option value="true">Yes</option>
+	            				<option value="false">No</option>
+	          				</select>
+	          			</span>
          			</div>
-        			<div>
-        				<input type="text" value={this.state.description} placeholder="Description" onChange={this.handleDescription} />
-        			</div>
-        			<div>
+        			<div className="form-upload">
         				<input name="img" type="file" multiple onChange={this.handlePhotoFile}/>
         			</div>
         			<div>

@@ -45,7 +45,7 @@ export default class Input extends Component {
       <button onClick={this.handleModal}> Click Me </button>
       <Modal 
         visible={this.state.modalVisible}
-        width="500"
+        width="550"
         height="475"
         effect="fadeInUp"
         onClickAway={() => this.handleModal()}
