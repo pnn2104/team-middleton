@@ -30,14 +30,14 @@ module.exports = function(socket) {
 	// })
 	//user connect with username
 	socket.on(USER_CONNECTED, (user) => {
-		//console.log('user in server', user);
+		console.log('user in server', user);
 		//user socket id
 		user.socketId = socket.id,
 		//add the user to the list of connected users
 		connectedUsers = addUser(connectedUsers, user);
 		socket.user = user 
 		//io.emit(USER_CONNECTED, connectedUsers)
-		//console.log(connectedUsers);
+		console.log('connected users', connectedUsers);
 	})
 
 	// socket.on('USER_DISCONNECTED')
@@ -45,8 +45,26 @@ module.exports = function(socket) {
 	// socket.on('MESSAGE_SENT')
 
 	// socket.on('MESSAGE_RECEIVED')
+	
+	// socket.on('TEST', data => {
+	// 	console.log('Testing with this data:', data);
+	// });
 
-	// socket.on('PRIVATE_MESSAGE')
+	socket.on(PRIVATE_MESSAGE, (data) => {
+		const {receiver, sender} = data;
+		console.log('data: ', data);
+		console.log('receiver', receiver, 'sender', sender);
+	
+		const connectedUsernames = Object.keys(connectedUsers); 
+		//if (connectedUsernames.indexOf(data.receiver)) {
+			const newChat = createChat({name: `${receiver}&${sender}`, users: [receiver, sender]})
+			console.log("newChat", newChat);
+			const receiverSocket = connectedUsers["aileen"].socketId;
+			console.log("receiverSocket", receiverSocket)
+			// socket.to(receiverSocket).emit(PRIVATE_MESSAGE, newChat)
+			// socket.emit(PRIVATE_MESSAGE, newChat)
+		//}
+	})
 }
 
 //adding a user into a user list
