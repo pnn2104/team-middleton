@@ -190,14 +190,78 @@ button {
 }
 
 .form-container{
-	position: absolute;
-	padding: 30px;
+	position: relative;
+    padding: 10px 40px 5px;
+}
+
+.form-div{
+	padding-left: 12px;
+}
+.form-container input[type=text], select{
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-container input[type=file]{
+	width: 76%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/*.form-container input[type=submit] {
+    
+   
+    margin: 8px 0;
+    border: none;
+   
+    cursor: pointer;
+}*/
+.form-description {
+	padding-left: 12px;
+}
+.form-dropdowns{
+	padding-left: 12px;
+}
+.form-title{
+	padding-left: 12px;
+}
+
+.form-data{
+	padding-left: 12px;
+}
+
+.form-upload{
+	padding-left: 12px;
+}
+
+.form-description input[type=text]{
+    width: 76%;
+    font-size: 10px;
+}
+
+
+.form-price{
+	padding-right: 15px;
+}
+
+.form-category-drop{
+	padding-right: 15px;
+}
+.form-donation-drop{
+	padding-left: 32px;
 }
 
 .form-submit{
-    float: right;
-    padding: 15px;
+    padding: 12px 20px;
     font-size: 0.5em;
+    width: 100%;
+    border-radius: 4px;
 }
 
 .community-board {
@@ -233,7 +297,6 @@ button {
 
 .user-modal-title{
 	text-align: center;
-	padding: 15px;
 }
 /* listing components that lives inside of community board */
 .listing-title {
