@@ -17,14 +17,11 @@ class ChatApp extends React.Component {
 		//this.initSocket = this.initSocket.bind(this);
 		//this.setUser = this.setUser.bind(this);
 	}
-	componentWillMount() {
-		//initializing socket connection
-		//this.initSocket()
-		//this.props.initializePrivateChat()
-	
-		
-		//console.log('username from session storage', JSON.parse(sessionStorage.getItem('user')))
-	}
+	// componentDidMount() {
+	// 	this.setState({
+	// 		chats: this.props.chats
+	// 	})
+	// }
 
 	//add message to the message array of a specific chat (using chat id)
 	
@@ -36,9 +33,11 @@ class ChatApp extends React.Component {
 	}
 
 	render() {
+	//	const overlay = this.props.chats[0].messages ? <Messages chats={this.props.chats}/> : <div></div>
 		return (
 			<div className="chat-app">
-				<Messages />
+				{/* {overlay} */}
+				<Messages chats={this.props.chats}/>
 				<ChatInput chats={this.props.chats} submitHandler={this.submitHandler} sendMessage={this.props.sendMessage} chatId={this.props.chatId}/>
 				<Sidebar />
 			</div>

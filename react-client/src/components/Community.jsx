@@ -104,6 +104,7 @@ export default class CommunityBoard extends Component {
 		return (message) => {
 			const chats = this.state.chats;
 			let newChats = chats.map((chat) => {
+				console.log(chat.id)
 				if (chat.id === chatId) {
 					chat.messages.push(message);
 					return chat
@@ -140,7 +141,8 @@ export default class CommunityBoard extends Component {
 		this.setState({
 			openChat: !this.state.openChat,
 			//when the chat box is open, receiver state property is also set to the receiver that was clicked on
-			receiver: event.target.value
+			//set receivers to 
+			//receiver: event.target.value
 		}, () => {
 			this.initializePrivateChat()
 			//want to include addChat here
