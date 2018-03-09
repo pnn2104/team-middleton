@@ -18,7 +18,7 @@ class Listing extends React.Component {
         <p>{this.props.listing.description}</p>
         <p>Price: {this.props.listing.price}</p>
 				{/* we should add a username to the schema */}
-        <p>Contact: <button onClick={(e) => this.props.toggleChatBox(e)} value={this.props.listing.user_id}>{this.props.listing.user_id}</button></p>
+        <p>Contact: <button onClick={(e) => this.props.toggleChatBox(e)} value={this.props.listing.username}>{this.props.listing.username}</button></p>
       </div>
     );
   }

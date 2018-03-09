@@ -260,7 +260,7 @@ app.get('/userPosts', checkSession, (req, res) => {
       const parsedData = JSON.parse(JSON.stringify(data));
       //console.log(parsedData)
       for (let datum of parsedData) {
-        if(datum.image !== null) {
+        if(datum.image !== null){
           datum.image = datum.image.slice(1, -1).split(',');
         }
       console.log(parsedData)
