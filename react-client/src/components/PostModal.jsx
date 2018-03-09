@@ -85,7 +85,7 @@ export default class Input extends Component {
       			}
     	} 
 		axios.post('/newpost', newListing)
-		     .then( (
+		     .then((done) =>{
 		     	this.setState({
 		     	title: '',
 		     	description: '',
@@ -94,7 +94,10 @@ export default class Input extends Component {
 		     	price: '',
 		     	zipcode: '',
 		     	photo: null
-		     })))
+		     })
+		     	this.props.handleModal()
+		     	this.props.updateList()
+		     })
 
 
 	}
