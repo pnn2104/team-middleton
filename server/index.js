@@ -254,16 +254,38 @@ app.get('/userPosts', checkSession, (req, res) => {
   db.connection.query(
     `SELECT * FROM communitypost WHERE user_id="${req.session.userId}"`,
     (err, data) => {
-      console.log(data);
+      //console.log(data);
       if (err) console.error(err);
 
       const parsedData = JSON.parse(JSON.stringify(data));
-      console.log(parsedData)
+      //console.log(parsedData)
       for (let datum of parsedData) {
-        if(datum.image !== null)
+        if(datum.image !== null) {
           datum.image = datum.image.slice(1, -1).split(',');
         }
       console.log(parsedData)
+        datum.image = datum.image.slice(1, -1).split(',');
+      }
+      //console.log(parsedData)
+      res.status(200).send(parsedData);
+    }
+  );
+});
+
+//getting all posting from communitypost 
+app.get('/allPosts', checkSession, (req, res) => {
+  db.connection.query(
+    "SELECT * FROM communitypost" ,
+    (err, data) => {
+      //console.log(data);
+      if (err) console.error(err);
+
+      const parsedData = JSON.parse(JSON.stringify(data));
+      //console.log(parsedData)
+      for (let datum of parsedData) {
+        datum.image = data.image? datum.image.slice(1, -1).split(',') : data.image;
+      }
+      //console.log(parsedData)
       res.status(200).send(parsedData);
     }
   );

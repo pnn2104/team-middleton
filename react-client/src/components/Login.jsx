@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import io from 'socket.io-client';
+import { USER_CONNECTED, VERIFY_USER, PRIVATE_MESSAGE } from '../events.js';
 
 class Login extends React.Component {
 	constructor(props){

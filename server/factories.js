@@ -34,7 +34,20 @@ const createChat = ({messages = [], name = "Community", users = []} = {}) => {
 	)
 }
 
+
+//send message to a private chat
+function sendMessageToChat(sender){
+	return (chatId, message)=>{
+		io.emit(`${MESSAGE_RECIEVED}-${chatId}`, createMessage({message, sender}))
+	}
+}
+
 const getTime = (date) => {
 	return `${date.getHours()}:${("0"+date.getMinutes()).slice(-2)}`
 }
 
+module.exports = {
+	createChat,
+	createMessage,
+	createUser
+}

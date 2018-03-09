@@ -5,5 +5,6 @@ module.exports = {
 	MESSAGE_SENT: "MESSAGE_SENT",
 	USER_DISCONNECTED: "USER_DISCONNECTED",
 	TYPING: "TYPING",
-	LOGOUT: "LOGOUT" //when the chat component is closed
+	LOGOUT: "LOGOUT", //when the chat component is closed,
+	PRIVATE_MESSAGE: "PRIVATE_MESSAGE"
 }
