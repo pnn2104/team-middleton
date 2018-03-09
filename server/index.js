@@ -9,9 +9,11 @@ var axios = require('axios');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const aws = require('aws-sdk');
-var socketIO = require('socket.io');
+//original configuration for socket.io
+//var socketIO = require('socket.io');
 var SocketManager = require('./socketManager');
-
+//**************** */
+//var io = require('socket.io');
 aws.config.update({
     secretAccessKey: '/Y+qnTBGnfpFiRWoJh6X/Mbl19O4cAut3vpS1//U',
     accessKeyId: 'AKIAJXYWBNHV4ON7KGGQ',
@@ -29,6 +31,12 @@ const upload = multer({
 });
 
 var app = express();
+
+//diff config for socket
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+//var io = module.exports.io = require('socket.io').listen(server)
+//console.log('io server', io)
 
 app.use(express.static(__dirname + '/../react-client/dist'));
 
@@ -354,13 +362,26 @@ app.post('/geocoder', (request, response) => {
 });
 
 
-var server = app.listen(process.env.PORT || 3000, function() {
-  console.log(`listening on port ${process.env.PORT || '3000'}!`);
-});
 
-//socketIO
-io = module.exports.io = socketIO(server);
 
+//socketIO original
+// var server = app.listen(process.env.PORT || 3000, function() {
+//   console.log(`listening on port ${process.env.PORT || '3000'}!`);
+// });
+// io = socketIO(server);
+io.on('connection', SocketManager)
+server.listen(3000);
+console.log('iooooo', io);
+//var io = module.exports.io = require('socket.io')(server)
 //when connection is established, io send a socket to a function
 //and the function here is SocketManager
-io.on('connection', SocketManager)
+
+
+//console.log('io', io)
+// module.exports = {
+//   io
+// }
+
+exports = module.exports = {}
+exports.io = io;
+//module.exports = io;

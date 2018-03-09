@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { MESSAGE_SENT } from '../events.js';
 class ChatInput extends React.Component {
 	constructor(props) {
 		super(props);
@@ -22,13 +22,14 @@ class ChatInput extends React.Component {
 	submitHandler(event) {
 		event.preventDefault()
 		this.sendMessage();
-		this.setState({
-			message: ''
-		})
+		// this.setState({
+		// 	message: ''
+		// })
 	}
 
 	sendMessage() {
-		this.props.sendMessage(this.state.message)
+		console.log('Chat input this.state.message', this.state.message);
+		this.props.sendMessage(this.props.chatId, this.state.message)
 	}
 
 	changeHandler(event) {

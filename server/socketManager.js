@@ -1,4 +1,5 @@
-const io = require('./index.js').io;
+var io = require('./index.js');
+console.log('IOOOO', io);
 //requiring database
 var db = require('../database-mysql');
 
@@ -61,7 +62,7 @@ module.exports = function (socket) {
 			})
 			//console.log('params', params);
 			//if the receiver is not connected
-		} else if (connectedUsernames.indexOf(data.receiver) === -1) {
+		} else if (connectedUsernames.indexOf(data.receiver) === -1 && data.receiver !== data.sender) {
 			//create the chat object anyways 
 			const newChat = createChat({ name: `${receiver}&${sender}`, users: [receiver, sender] })
 			console.log('receiver not connected chat', newChat);
@@ -85,27 +86,30 @@ module.exports = function (socket) {
 	// 	console.log('Testing with this data:', data);
 	// });
 
-	socket.on(PRIVATE_MESSAGE, (data) => {
-		const {receiver, sender} = data;
-		console.log('data: ', data);
-		console.log('receiver', receiver, 'sender', sender);
+	// socket.on(PRIVATE_MESSAGE, (data) => {
+	// 	const {receiver, sender} = data;
+	// 	console.log('data: ', data);
+	// 	console.log('receiver', receiver, 'sender', sender);
 	
-		const connectedUsernames = Object.keys(connectedUsers); 
-		//if (connectedUsernames.indexOf(data.receiver)) {
-			const newChat = createChat({name: `${receiver}&${sender}`, users: [receiver, sender]})
-			console.log("newChat", newChat);
-			const receiverSocket = connectedUsers["aileen"].socketId;
-			console.log("receiverSocket", receiverSocket)
-			// socket.to(receiverSocket).emit(PRIVATE_MESSAGE, newChat)
-			// socket.emit(PRIVATE_MESSAGE, newChat)
-		//}
-	})
+	// 	const connectedUsernames = Object.keys(connectedUsers); 
+	// 	//if (connectedUsernames.indexOf(data.receiver)) {
+	// 		const newChat = createChat({name: `${receiver}&${sender}`, users: [receiver, sender]})
+	// 		console.log("newChat", newChat);
+	// 		const receiverSocket = connectedUsers["aileen"].socketId;
+	// 		console.log("receiverSocket", receiverSocket)
+	// 		// socket.to(receiverSocket).emit(PRIVATE_MESSAGE, newChat)
+	// 		// socket.emit(PRIVATE_MESSAGE, newChat)
+	// 	//}
+	// })
 
 //function that takes in a sender
 //return a function that take a chat id and a message
 //and then emit a broadcast to the chat id
 function sendMessageToChat(sender) {
+	//console.log('sender', sender);
 	return (chatId, message) => {
+		//console.log("SocketMager chatId", chatId, 'message',  message);
+		//console.log("io", io)
 		io.emit(`${MESSAGE_RECEIVED}-${chatId}`, createMessage({ message, sender }))
 	}
 }

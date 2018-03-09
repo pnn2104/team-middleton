@@ -5,7 +5,7 @@ import ListingModal from './ListingModal.jsx';
 import ChatApp from './ChatApp.jsx';
 import axios from 'axios';
 import io from 'socket.io-client';
-import { USER_CONNECTED, PRIVATE_MESSAGE, MESSAGE_SENT} from '../events.js';
+import { USER_CONNECTED, PRIVATE_MESSAGE, MESSAGE_SENT, MESSAGE_RECEIVED} from '../events.js';
 
 const socketUrl = "http://localhost:3000/"
 export default class CommunityBoard extends Component {
@@ -19,7 +19,8 @@ export default class CommunityBoard extends Component {
 			socket: null,
 			user: null,
 			chats: [],
-			receiver: null
+			receiver: null,
+			chatId: null
 			//showChats: false //open the chatbox without contacting anyone;
 			//options: ['Bedroom', 'Kitchen', 'Dining Room', 'Appliance', 'Electronics', 'Clothes', 'Misc']
 			//showManageListings: false
@@ -84,12 +85,18 @@ export default class CommunityBoard extends Component {
 	//add a chat when a username is clicked
 	addChat(chat) {
 		console.log('client side chat', chat);
+		const socket = this.state.socket
+		this.setState({
+			chatId: chat.id
+		})
 		//shallow copies of array of chats
 		const chats = this.state.chats.slice();
 		chats.push(chat);
 		console.log('chats', chats);
 		this.setState({chats})
-		//socket.on(messageEvent, this.addMessageToChat(chat.id))
+
+		const messageEvent = `${MESSAGE_RECEIVED}-${chat.id}`
+		socket.on(messageEvent, this.addMessageToChat(chat.id))
 	}
 	
 	addMessageToChat(chatId) {
@@ -113,7 +120,8 @@ export default class CommunityBoard extends Component {
 	}
 
 	sendMessage(chatId, message) {
-		const socket = this.props.socket;
+		console.log("chatId", chatId, "message", message)
+		const socket = this.state.socket;
 		socket.emit(MESSAGE_SENT, {chatId, message})
 	} 
 
@@ -173,6 +181,7 @@ export default class CommunityBoard extends Component {
 																								socket={this.state.socket} user={this.state.user}
 																								chats={this.state.chats}
 																								sendMessage={this.sendMessage}
+																								chatId={this.state.chatId}
 																			 /> : <div></div>
 		//rendering the modal that displays the listings' pictures
 		if (this.state.open) {

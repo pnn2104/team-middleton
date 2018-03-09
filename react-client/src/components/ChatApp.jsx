@@ -1,6 +1,6 @@
 import React from 'react';
-import Messages from './ChatInput.jsx';
-import ChatInput from './Messages.jsx';
+import Messages from './Messages.jsx';
+import ChatInput from './ChatInput.jsx';
 import Sidebar from './Sidebar.jsx';
 import io from 'socket.io-client';
 import { USER_CONNECTED, VERIFY_USER, PRIVATE_MESSAGE } from '../events.js';
@@ -38,8 +38,8 @@ class ChatApp extends React.Component {
 	render() {
 		return (
 			<div className="chat-app">
-				<Messages messages={this.state.messages}/>
-				<ChatInput chats={this.props.chats} submitHandler={this.submitHandler} sendMessage={this.props.sendMessage}/>
+				<Messages />
+				<ChatInput chats={this.props.chats} submitHandler={this.submitHandler} sendMessage={this.props.sendMessage} chatId={this.props.chatId}/>
 				<Sidebar />
 			</div>
 		)
