@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Draggable, Droppable} from 'react-drag-and-drop';
 import Slider from 'react-slick';
-//import './app.css';
 import FaClose from 'react-icons/lib/fa/close';
 import axios from 'axios';
 
@@ -248,7 +247,7 @@ export default class Inventory extends Component {
       slidesToScroll: 1,
     };
     return (
-      <div className="container">
+      <div className="container" style={{maxWidth: "1000px", margin: "50px"}}>
         <div className="edit">
           <h1>Inventory</h1>
           <input
