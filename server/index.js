@@ -271,8 +271,6 @@ app.get('/userPosts', checkSession, (req, res) => {
         if(datum.image !== null){
           datum.image = datum.image.slice(1, -1).split(',');
         }
-      console.log(parsedData)
-        datum.image = datum.image.slice(1, -1).split(',');
       }
       //console.log(parsedData)
       res.status(200).send(parsedData);
