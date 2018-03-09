@@ -46,6 +46,11 @@ CREATE TABLE communitypost (
   PRIMARY KEY (id)
 );
 
+CREATE TABLE chat (
+  chatId varchar(255) NOT NULL,
+  users varchar(500) NOT NULL
+)
+
 
 INSERT INTO communitycategory (id, description) VALUES (1, "Bedroom");
 INSERT INTO communitycategory (id, description) VALUES (2, "Kitchen");

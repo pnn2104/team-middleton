@@ -5,7 +5,7 @@ import ListingModal from './ListingModal.jsx';
 import ChatApp from './ChatApp.jsx';
 import axios from 'axios';
 import io from 'socket.io-client';
-import { USER_CONNECTED, PRIVATE_MESSAGE } from '../events.js';
+import { USER_CONNECTED, PRIVATE_MESSAGE, MESSAGE_SENT} from '../events.js';
 
 const socketUrl = "http://localhost:3000/"
 export default class CommunityBoard extends Component {
@@ -20,6 +20,7 @@ export default class CommunityBoard extends Component {
 			user: null,
 			chats: [],
 			receiver: null
+			//showChats: false //open the chatbox without contacting anyone;
 			//options: ['Bedroom', 'Kitchen', 'Dining Room', 'Appliance', 'Electronics', 'Clothes', 'Misc']
 			//showManageListings: false
 		}
@@ -31,6 +32,8 @@ export default class CommunityBoard extends Component {
 		this.setUser = this.setUser.bind(this);
 		this.initializePrivateChat = this.initializePrivateChat.bind(this);
 		this.addChat = this.addChat.bind(this);
+		this.sendMessage = this.sendMessage.bind(this);
+		this.showChatWithoutContact = this.showChatWithoutContact.bind(this);
 	}
 
 	componentDidMount() {
@@ -54,7 +57,6 @@ export default class CommunityBoard extends Component {
 			this.setUser()
 			console.log('Sockets', this.state.socket);
 		});
-		
 	}
 
 	setUser() {
@@ -75,26 +77,45 @@ export default class CommunityBoard extends Component {
 		const data = {receiver: this.state.receiver, sender: this.state.user};
 		console.log('data: ', data);
 		this.state.socket.emit(PRIVATE_MESSAGE, data);
-		this.state.socket.emit('TEST', data);
+		//console.log('newChat', newChat);
+		//this.state.socket.emit('TEST', data);
 	}
 
 	//add a chat when a username is clicked
-	addChat(chat, reset) {
-		// const chat = {
-		// 	participents: [this.state.user, this.state.receiver],
-		// 	messages: [],
-		// 	chatId:  
-		// }
-		// chats = this.state.chats;
-		// chats.push(chat);
-		// this.setState({chats});
-		//push into the chats array a chat object that has the name os the receiver & chat id & arrays of messages
+	addChat(chat) {
+		console.log('client side chat', chat);
+		//shallow copies of array of chats
+		const chats = this.state.chats.slice();
+		chats.push(chat);
+		console.log('chats', chats);
+		this.setState({chats})
+		//socket.on(messageEvent, this.addMessageToChat(chat.id))
 	}
-
+	
 	addMessageToChat(chatId) {
-		
+		//looping thru the chats array
+		return (message) => {
+			const chats = this.state.chats;
+			let newChats = chats.map((chat) => {
+				if (chat.id === chatId) {
+					chat.messages.push(message);
+					return chat
+				}
+			})
+			this.setState({
+				chats: newChats
+			})
+		}
+			//for each chat 
+				//check for chat id
+					//push message to chat.messages
+		//set state of the chat again
 	}
 
+	sendMessage(chatId, message) {
+		const socket = this.props.socket;
+		socket.emit(MESSAGE_SENT, {chatId, message})
+	} 
 
 	getAllPosting() {
 		axios.get('/allPosts')
@@ -107,6 +128,11 @@ export default class CommunityBoard extends Component {
 		})
 	}
 
+	showChatWithoutContact() {
+		this.setState({
+			openChat: !this.state.openChat
+		})
+	}
 	//toggle state open chat for conditional rendering of the chat box in community component
 	//at the same time, add a chat to the side bar
 	toggleChatBox(event) {
@@ -135,10 +161,13 @@ export default class CommunityBoard extends Component {
 	}
 
 	render() {
+		//const chatNoContact = this.state.showChats ? <ChatApp /> : <div></div>
 		//passdown the receiver to the ChapApp
 		const chat = this.state.openChat ? <ChatApp initializePrivateChat={this.initializePrivateChat} 
 																								openChat={this.state.openChat} receiver={this.state.receiver} 
 																								socket={this.state.socket} user={this.state.user}
+																								chats={this.state.chats}
+																								sendMessage={this.sendMessage}
 																			 /> : <div></div>
 		//rendering the modal that displays the listings' pictures
 		if (this.state.open) {
@@ -153,6 +182,7 @@ export default class CommunityBoard extends Component {
 					)
 				})}
 				{chat}
+				<button onClick={this.showChatWithoutContact}>Show Chats</button>
 			</div>
 		)
 	}
