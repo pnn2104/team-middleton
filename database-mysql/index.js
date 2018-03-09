@@ -13,6 +13,7 @@ const getItemsNoBox = function(user, cb) {
   connection.query(
     `select name from items where user="${user}" and boxName="0";`,
     (err, data) => {
+      console.log(`[database] data: ${data}`);
       cb(data);
     },
   );

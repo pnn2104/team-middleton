@@ -362,7 +362,9 @@ app.post('/geocoder', (request, response) => {
 
 app.post('/getItemsNoBox', (req, res) => {
   var {user} = req.body;
+  console.log(`[server] user: ${user}`);
   db.getItemsNoBox(user, data => {
+    console.log(`[database -> server] data: ${data}`);
     res.send(data); //array of object {"name": item}
   });
 });
