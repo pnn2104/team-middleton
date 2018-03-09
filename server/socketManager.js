@@ -21,6 +21,7 @@ const {
 	createChat
 } = require('./factories.js');
 
+
 let connectedUsers = {};
 
 module.exports = function (socket) {
