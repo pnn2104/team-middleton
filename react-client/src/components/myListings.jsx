@@ -60,6 +60,7 @@ export default class Input extends Component {
               <ModalPopover handleModal={this.state.handleModal}/>
             </div>
         </Modal>
+        <div className="user-board">
         {
           this.state.posts.map((listing,i) =>{
             return (
@@ -67,6 +68,7 @@ export default class Input extends Component {
             )
           })
         }
+        </div>
         </div>
     );
   }

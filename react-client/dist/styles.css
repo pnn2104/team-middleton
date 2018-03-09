@@ -47,11 +47,11 @@ h1 {
 }
 
 .navbar {
-	grid-row: 2;
+	grid-row: 3;
 	grid-column: 2/6;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 100px 1fr;
+	grid-template-rows: 100px 100px 1fr;
 	clear: both;
 }
 
@@ -301,6 +301,9 @@ button {
 /* listing components that lives inside of community board */
 .listing{
 	padding: 10px 15px 15px 15px;
+	background-color: #FFE4A8;
+	border-radius: 5px;
+	margin-bottom: 12px;
 }
 
 .listing-title {
@@ -324,7 +327,7 @@ button {
 }
 
 .user-delete{
-	left: 230px;
+	left: 80%;
     padding: 20px;
     position: relative;
 }
@@ -334,7 +337,7 @@ button {
     background-color: #B5BCBB;
     padding: 15px;
     height: 58px;
-    left: 192%;
+    left: 5%;
     margin-top: 24px;
     margin-bottom: 24px;
     border-radius: 5px;
