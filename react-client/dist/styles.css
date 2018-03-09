@@ -329,6 +329,19 @@ button {
     position: relative;
 }
 
+.show-modal{
+	font-size: .8em;
+    background-color: #B5BCBB;
+    padding: 15px;
+    height: 58px;
+    left: 192%;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    border-radius: 5px;
+    color: white;
+    position: relative;
+}
+
 
 /* Modal Slideshow */
 html.modal-slideshow--opened {

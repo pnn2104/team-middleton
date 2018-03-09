@@ -45,7 +45,7 @@ export default class Input extends Component {
     return (
 
         <div >
-          <button onClick={this.handleModal}> Create a Listing </button>
+          <button className="show-modal" onClick={this.handleModal}> Create a Listing </button>
 
         <Modal 
           visible={this.state.modalVisible}
