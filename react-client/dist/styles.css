@@ -47,11 +47,11 @@ h1 {
 }
 
 .navbar {
-	grid-row: 3;
+	grid-row: 2;
 	grid-column: 2/6;
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 100px 100px 1fr;
+	grid-template-rows: 100px 1fr;
 	clear: both;
 }
 
@@ -137,7 +137,7 @@ button {
 	padding: 6px;
     border-radius: 5px;
     margin: 5px;
-    display: block;
+    display: inline-flex;
 }
 
 .complete {
@@ -149,7 +149,7 @@ button {
 	font-family: 'Lucida Grande';
 	float: left;
 	clear: both;
-	width: 35%;
+	padding-left: 46px;
 }
 
 .checkbox {
