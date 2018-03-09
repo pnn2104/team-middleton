@@ -15,13 +15,13 @@ const getItemsNoBox = function(user, cb) {
     (err, data) => {
       console.log(`[database] data: ${data}`);
       cb(data);
-    },
+    }
   );
 };
 
 const postItemNoBox = function(user, item) {
   connection.query(
-    `insert into items (name, user) values ("${item}", "${user}");`,
+    `insert into items (name, user) values ("${item}", "${user}");`
   );
 };
 
@@ -30,7 +30,7 @@ const getBoxes = function(user, cb) {
     `select name from boxes where user="${user}";`,
     (err, data) => {
       cb(data);
-    },
+    }
   );
 };
 
@@ -39,13 +39,13 @@ const getItemsByBox = function(user, boxName, cb) {
     `select name from items where user="${user}" and boxName="${boxName}";`,
     (err, data) => {
       cb(data);
-    },
+    }
   );
 };
 
 const postBox = function(user, box) {
   connection.query(
-    `insert into boxes (name, user) values ("${box}", "${user}");`,
+    `insert into boxes (name, user) values ("${box}", "${user}");`
   );
 };
 
@@ -57,9 +57,9 @@ const itemFromBoxToBox = function(user, item, fromBox, toBox, cb) {
         `delete from items where name="${item}" and user="${user}" and boxName="${fromBox}";`,
         result => {
           cb(result);
-        },
+        }
       );
-    },
+    }
   );
 };
 
@@ -71,9 +71,9 @@ const itemFromBoxToEmpty = function(user, item, fromBox, cb) {
         `delete from items where name="${item}" and user="${user}" and boxName="${fromBox}";`,
         result => {
           cb(result);
-        },
+        }
       );
-    },
+    }
   );
 };
 
@@ -85,9 +85,9 @@ const itemFromEmptyToBox = function(user, item, toBox, cb) {
         `delete from items where user="${user}" and name="${item}" and boxName="0";`,
         result => {
           cb(result);
-        },
+        }
       );
-    },
+    }
   );
 };
 
@@ -96,7 +96,7 @@ const deleteBox = function(user, box, cb) {
     `delete from boxes where user="${user}" and name="${box}";`,
     result => {
       cb(result);
-    },
+    }
   );
 };
 
@@ -105,7 +105,7 @@ const deleteItem = function(user, item, cb) {
     `delete from items where user="${user}" and name="${item}" and boxName="0";`,
     result => {
       cb(result);
-    },
+    }
   );
 };
 
@@ -114,7 +114,7 @@ const deleteItemByBox = function(user, item, box, cb) {
     `delete from items where user="${user}" and name="${item}" and boxName="${box}";`,
     result => {
       cb(result);
-    },
+    }
   );
 };
 

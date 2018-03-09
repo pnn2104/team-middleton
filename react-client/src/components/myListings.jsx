@@ -57,7 +57,7 @@ export default class Input extends Component {
             <div className="user-modal">
               <a className="user-modal-close" href="javascript:void(0);" onClick={() => this.handleModal()}>X</a>
               <h1 className="user-modal-title">Create a Post</h1>
-              <ModalPopover handleModal={this.state.handleModal}/>
+              <ModalPopover updatedList={this.getPosts} handleModal={this.handleModal}/>
             </div>
         </Modal>
         <div className="user-board">
