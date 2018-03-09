@@ -12,14 +12,14 @@ class Listing extends React.Component {
         className="listing"
         onClick={() => this.props.openSlideShow(this.props.listing)}>
         <div className="listing-title">
-          <a target="_blank" href={this.props.listing.image[0]}>
-            <img src={this.props.listing.image[0]} />
+          <a target="_blank" href={this.props.listing.image}>
+            <img src={this.props.listing.image} />
           </a>
           <h3>{this.props.listing.title}</h3>
         </div>
         <p>{this.props.listing.description}</p>
         <p>Price: {this.props.listing.price}</p>
-        <button onClick={() => this.props.handleDelete(this.props.listing.id)} >Delete Post</button>
+        <span><button className="user-delete" onClick={() => this.props.handleDelete(this.props.listing.id)} >Delete Post</button></span>
       </div>
     );
   }

@@ -85,7 +85,8 @@ export default class Input extends Component {
       			}
     	} 
 		axios.post('/newpost', newListing)
-		     .then((this.setState({
+		     .then( (
+		     	this.setState({
 		     	title: '',
 		     	description: '',
 		     	category: '', 
@@ -94,6 +95,8 @@ export default class Input extends Component {
 		     	zipcode: '',
 		     	photo: null
 		     })))
+
+
 	}
 
 	render(){
