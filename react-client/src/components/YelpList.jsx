@@ -154,13 +154,13 @@ class YelpList extends React.Component {
       <div className="services">
         {this.state.YelpList.map((business, i) => {
           var letter =  String.fromCharCode(65 + i);
-            return < YelpListItem
+            return <YelpListItem
             onMouseEnter={this.handleMouseEnter}
             onMouseLeave={this.handleMouseLeave}  
             key={business.name} 
             business={business} 
             letter={letter}
-             index={i}
+            index={i}
              />
           }
         )}

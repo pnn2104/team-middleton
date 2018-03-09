@@ -323,11 +323,12 @@ button {
 	margin-top: 0px;
 }
 
-.listing button{
-	position: relative;
-	display: inline;
-	float: right;
+.user-delete{
+	left: 230px;
+    padding: 20px;
+    position: relative;
 }
+
 
 /* Modal Slideshow */
 html.modal-slideshow--opened {

@@ -3,19 +3,17 @@ import ModalPopover from './PostModal.jsx';
 import Listing from './userListingItem.jsx';
 import Modal from 'react-awesome-modal';
 import axios from 'axios';
-//import postDummyData from './postDummyData.jsx';
+import postDummyData from './postDummyData.jsx';
 
 export default class Input extends Component {
   constructor(props) {
     super(props);
     this.state = {
       posts: [],
-      showModal: false,
       modalVisible: false
     };
 
     this.getPosts = this.getPosts.bind(this);
-    this.updateViewableModal = this.updateViewableModal.bind(this);
     this.handleModal = this.handleModal.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
   }
@@ -25,7 +23,7 @@ export default class Input extends Component {
   }
 
   getPosts() {
-    axios.get('/userPosts').then(data => {
+    axios.get('/userPosts').then((data) => {
       this.setState({posts: data.data});
     });
   }
@@ -37,10 +35,6 @@ export default class Input extends Component {
          })
   }
 
-  updateViewableModal() {
-    this.setState({showModal: !this.state.showModal});
-  }
-
   handleModal(){
     this.setState({
       modalVisible: !this.state.modalVisible
@@ -50,8 +44,8 @@ export default class Input extends Component {
   render() {
     return (
 
-        <div className="post-botton">
-          <button onClick={this.handleModal}> Click Me </button>
+        <div >
+          <button onClick={this.handleModal}> Create a Listing </button>
 
         <Modal 
           visible={this.state.modalVisible}
@@ -63,9 +57,16 @@ export default class Input extends Component {
             <div className="user-modal">
               <a className="user-modal-close" href="javascript:void(0);" onClick={() => this.handleModal()}>X</a>
               <h1 className="user-modal-title">Create a Post</h1>
-              <ModalPopover />
+              <ModalPopover handleModal={this.state.handleModal}/>
             </div>
         </Modal>
+        {
+          this.state.posts.map((listing,i) =>{
+            return (
+              <Listing key={i} listing={listing} handleDelete={this.handleDelete} />
+            )
+          })
+        }
         </div>
     );
   }
