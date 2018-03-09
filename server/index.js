@@ -369,7 +369,7 @@ app.post('/geocoder', (request, response) => {
 //   console.log(`listening on port ${process.env.PORT || '3000'}!`);
 // });
 // io = socketIO(server);
-io.on('connection', SocketManager)
+io.on('connection', (socket) =>  {SocketManager(socket, io)})
 server.listen(3000);
 console.log('iooooo', io);
 //var io = module.exports.io = require('socket.io')(server)
@@ -382,6 +382,6 @@ console.log('iooooo', io);
 //   io
 // }
 
-exports = module.exports = {}
-exports.io = io;
+// exports = module.exports = {}
+// exports.io = io;
 //module.exports = io;

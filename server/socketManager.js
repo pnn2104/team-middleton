@@ -1,5 +1,5 @@
-var io = require('./index.js');
-console.log('IOOOO', io);
+// var io = require('./index.js');
+// console.log('IOOOO', io);
 //requiring database
 var db = require('../database-mysql');
 
@@ -24,7 +24,7 @@ const {
 
 let connectedUsers = {};
 
-module.exports = function (socket) {
+module.exports = function (socket, io) {
 	console.log("Socket ID:" + socket.id)
 	let sendMessageToChatFromUser;
 
@@ -49,12 +49,14 @@ module.exports = function (socket) {
 		const connectedUsernames = Object.keys(connectedUsers);
 		if (connectedUsernames.indexOf(data.receiver) !== -1) {
 			const newChat = createChat({ name: `${receiver}&${sender}`, users: [receiver, sender] })
-			//console.log("newChat", newChat);
+			console.log("newChat", newChat);
 			const receiverSocket = connectedUsers[receiver].socketId;
-			//console.log("receiverSocket", receiverSocket)
-			socket.to(receiverSocket).emit(PRIVATE_MESSAGE, newChat)
+			socket.to(receiverSocket).emit(PRIVATE_MESSAGE, newChat);
+			 //emit to the socket of the other person connected in connected users
+			//io.in(newChat.name).emit(PRIVATE_MESSAGE, newChat.messages); 
+			//socket.to(senderSocket).emit(PRIVATE_MESSAGE, newChat)
 			socket.emit(PRIVATE_MESSAGE, newChat)
-			sendMessageToChatFromUser = sendMessageToChat(sender)
+			sendMessageToChatFromUser = sendMessageToChat(newChat.name, sender, io)
 			//saving chat Id to database table "chat", schema below 
 			let queryString = "INSERT IGNORE INTO chat (chatId, users) VALUES (?, ?)";
 			let params = [newChat.id, JSON.stringify(newChat.users)];
@@ -66,8 +68,9 @@ module.exports = function (socket) {
 		} else if (connectedUsernames.indexOf(data.receiver) === -1 && data.receiver !== data.sender) {
 			//create the chat object anyways 
 			const newChat = createChat({ name: `${receiver}&${sender}`, users: [receiver, sender] })
-			console.log('receiver not connected chat', newChat);
+			//console.log('receiver not connected chat', newChat);
 			//save it to the database
+			sendMessageToChatFromUser = sendMessageToChat(newChat.name, sender, io)
 			let queryString = "INSERT IGNORE INTO chat (chatId, users) VALUES (?, ?)";
 			let params = [newChat.id, JSON.stringify(newChat.users)];
 			db.connection.query(queryString, params, function (err) {
@@ -77,40 +80,20 @@ module.exports = function (socket) {
 	})
 
 	socket.on(MESSAGE_SENT, ({ chatId, message }) => {
+		console.log("chatId", chatId, "message", message);
 		sendMessageToChatFromUser(chatId, message);
 	})
 }
 
-	// socket.on('MESSAGE_RECEIVED')
-	
-	// socket.on('TEST', data => {
-	// 	console.log('Testing with this data:', data);
-	// });
-
-	// socket.on(PRIVATE_MESSAGE, (data) => {
-	// 	const {receiver, sender} = data;
-	// 	console.log('data: ', data);
-	// 	console.log('receiver', receiver, 'sender', sender);
-	
-	// 	const connectedUsernames = Object.keys(connectedUsers); 
-	// 	//if (connectedUsernames.indexOf(data.receiver)) {
-	// 		const newChat = createChat({name: `${receiver}&${sender}`, users: [receiver, sender]})
-	// 		console.log("newChat", newChat);
-	// 		const receiverSocket = connectedUsers["aileen"].socketId;
-	// 		console.log("receiverSocket", receiverSocket)
-	// 		// socket.to(receiverSocket).emit(PRIVATE_MESSAGE, newChat)
-	// 		// socket.emit(PRIVATE_MESSAGE, newChat)
-	// 	//}
-	// })
-
 //function that takes in a sender
 //return a function that take a chat id and a message
 //and then emit a broadcast to the chat id
-function sendMessageToChat(sender) {
-	//console.log('sender', sender);
+function sendMessageToChat(chatname, sender, io) {
+	console.log('sender', sender, "chatname", chatname);
 	return (chatId, message) => {
-		//console.log("SocketMager chatId", chatId, 'message',  message);
+		console.log("SocketMager chatId", chatId, 'message',  message);
 		//console.log("io", io)
+		// io.in(chatname).emit(`${MESSAGE_RECEIVED}-${chatId}`, createMessage({ message, sender })); 
 		io.emit(`${MESSAGE_RECEIVED}-${chatId}`, createMessage({ message, sender }))
 	}
 }
