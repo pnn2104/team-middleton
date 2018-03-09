@@ -1,4 +1,5 @@
 var express = require('express');
+const path = require('path');
 var session = require('express-session')
 var bodyParser = require('body-parser');
 var bcrypt = require('bcrypt-nodejs');
@@ -359,6 +360,90 @@ app.post('/geocoder', (request, response) => {
     .catch(err => console.log(err));
 });
 
+app.post('/getItemsNoBox', (req, res) => {
+  var {user} = req.body;
+  db.getItemsNoBox(user, data => {
+    res.send(data); //array of object {"name": item}
+  });
+});
+
+app.post('/getItemsByBox', (req, res) => {
+  var {user, boxName} = req.body;
+  db.getItemsByBox(user, boxName, data => {
+    res.send(data); //array of object {"name": item}
+  });
+});
+
+app.post('/getBoxes', (req, res) => {
+  var {user} = req.body;
+  db.getBoxes(user, data => {
+    res.send(data);
+  });
+});
+
+app.post('/postItemNoBox', (req, res) => {
+  var {user, item} = req.body;
+  console.log(user, item);
+  db.postItemNoBox(user, item, (err, data) => {
+    if (err) {
+      console.log(err);
+    }
+    res.send();
+  });
+});
+
+app.post('/itemFromBoxToBox', (req, res) => {
+  var {user, item, fromBox, toBox} = req.body;
+  db.itemFromBoxToBox(user, item, fromBox, toBox, result => {
+    res.send();
+  });
+});
+
+app.post('/itemFromBoxToEmpty', (req, res) => {
+  var {user, item, fromBox} = req.body;
+  db.itemFromBoxToEmpty(user, item, fromBox, result => {
+    res.send();
+  });
+});
+
+app.post('/itemFromEmptyToBox', (req, res) => {
+  var {user, item, toBox} = req.body;
+  db.itemFromEmptyToBox(user, item, toBox, result => {
+    res.send();
+  });
+});
+
+app.post('/postBox', (req, res) => {
+  var {user, boxName} = req.body;
+  db.postBox(user, boxName, () => {
+    res.send();
+  });
+});
+
+app.post('/deleteItem', (req, res) => {
+  var {user, item} = req.body;
+  db.deleteItem(user, item, () => {
+    res.send();
+  });
+});
+
+app.post('/deleteItemByBox', (req, res) => {
+  var {user, item, boxName} = req.body;
+  db.deleteItemByBox(user, item, boxName, () => {
+    res.send();
+  });
+});
+
+app.post('/deleteBox', (req, res) => {
+  var {user, boxName} = req.body;
+  db.deleteBox(user, boxName, () => {
+    res.send();
+  });
+});
+
+app.get('*', function(req, res) {
+  res.sendFile(path.join(__dirname, '../react-client/dist/index.html'));
+});
 
 
 

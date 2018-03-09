@@ -51,6 +51,20 @@ CREATE TABLE chat (
   users varchar(500) NOT NULL
 )
 
+create table boxes (
+	id int not null AUTO_INCREMENT,
+	name varchar(300) not null,
+	user varchar(50) not null,
+	PRIMARY key (id)
+);
+
+create table items (
+	id int not null AUTO_INCREMENT,
+	name varchar(300) not null,
+	boxName varchar(300) default 0,
+	user varchar(50) not null,
+	PRIMARY key (id)
+);
 
 INSERT INTO communitycategory (id, description) VALUES (1, "Bedroom");
 INSERT INTO communitycategory (id, description) VALUES (2, "Kitchen");

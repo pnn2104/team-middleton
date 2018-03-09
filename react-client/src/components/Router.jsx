@@ -4,6 +4,8 @@ import TaskList from './TaskList.jsx';
 import YelpList from './YelpList.jsx';
 import Community from './Community.jsx';
 import myListings from './myListings.jsx'
+import Inventory from './Inventory.jsx'
+
 
 const Moving = (props) => (
   <Router>
@@ -21,12 +23,17 @@ const Moving = (props) => (
          <li>
           <Link to="/mylistings">My Listings</Link>
         </li>
+         <li>
+          <Link to="/inventory">Inventory</Link>
+        </li>
+
       </ul>
       <button id="logout" onClick={props.logout}>Log Out</button>
       <Route exact path="/" component={TaskList}/>
       <Route path="/service" component={YelpList} />
       <Route path="/community" component={Community} />
       <Route path="/mylistings" component={myListings} />
+      <Route path="/inventory" component={Inventory} />
 
     </div>
   </Router>
