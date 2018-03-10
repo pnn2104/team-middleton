@@ -305,7 +305,9 @@ export default class Inventory extends Component {
                 {this.state.listItems.map((item, i) => (
                   <Draggable
                     style={{
-                      border: 'dotted 1px black',
+                      width: '100px',
+                      border: 'dotted 0.5px black',
+                      borderRadius: '10px',
                       display: 'inline-block',
                       margin: '3px',
                       padding: '3px',
