@@ -3,10 +3,10 @@ var bcrypt = require('bcrypt');
 
 // information for database hosted on AWS, deployed on Heroku
 var connection = mysql.createConnection({
-  host: process.env.DB_URL || 'moving.cgipzmxzylvi.us-east-1.rds.amazonaws.com',
-  user: 'middleton',
-  password: 'h4ckr34t0r',
-  database: 'moving',
+  host: process.env.DB_URL || 'localhost',
+  user: process.env.USERNAME || 'root',
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
 const getMovingInfo = (user, cb) => {
