@@ -249,34 +249,52 @@ export default class Inventory extends Component {
     return (
       <div className="container" style={{maxWidth: "1000px", margin: "50px"}}>
         <div className="edit">
-          <h1>Inventory</h1>
+          <h1>Get Packing</h1>
+          <div className="inventory-search-container">
+    
           <input
-            placeholder="search item"
+            placeholder="What are you looking for ?..."
             onChange={e => this.setState({search: e.target.value})}
             value={this.state.search}
           />
+          <span>
           <button onClick={() => this.clickSearch()}>Search</button>
+          </span>
+          <span>
           <button onClick={() => this.deleteSearch()}>Delete query</button>
+          </span>
+           </div>
+           <div className="inventory-addItem-container">
           <input
+
             placeholder="add item"
             onChange={e => this.setState({newItem: e.target.value})}
             value={this.state.newItem}
           />
-          <button onClick={() => this.clickItem()}>Submit</button>
+          <div>
+          <button onClick={() => this.clickItem()}>Add an Item</button>
+          </div>
+          </div>
+          <span className="inventory-addBox-container">
           <input
             placeholder="add box name"
             onChange={e => this.setState({newBox: e.target.value})}
             value={this.state.newBox}
           />
-          <button onClick={() => this.clickBox()}>Submit</button>
+          <div>
+          <button onClick={() => this.clickBox()}>Create a Box</button>
+          </div>
+          </span>
           {
             <Droppable
               style={{
                 border: 'solid 1px black',
                 height: '100px',
-                width: '80%',
+                width: '375px',
+                left: '2%',
+                borderRadius: '5px',
+                backgroundColor: "#FFE4A8",
                 margin: '5px',
-                backgroundColor: 'lightyellow',
                 padding: '5px',
                 minHeight: '100px',
                 height: 'auto',
@@ -287,7 +305,9 @@ export default class Inventory extends Component {
                 {this.state.listItems.map((item, i) => (
                   <Draggable
                     style={{
-                      border: 'dotted 1px black',
+                      width: '100px',
+                      border: 'dotted 0.5px black',
+                      borderRadius: '10px',
                       display: 'inline-block',
                       margin: '3px',
                       padding: '3px',
@@ -316,12 +336,15 @@ export default class Inventory extends Component {
                     margin: '5px',
                     height: 'auto',
                     minHeight: '200px',
+                    backgroundColor: "#FFE4A8",
+                    borderRadius: '5px',
+                    padding: '10px'
                   }}
                   id={itm}
                   types={['item']}
                   onDrop={e => this.onDrop(e, itm)}>
                   <div>
-                    name of box: {itm}{' '}
+                    Box: {itm}{' '}
                     <FaClose onClick={() => this.handleDeleteBox(itm)} />
                   </div>
                   {this.state.listBox[itm].map((each, k) => (
@@ -332,8 +355,9 @@ export default class Inventory extends Component {
                         data={JSON.stringify({name: each, fromBox: itm})}
                         style={{
                           width: 'auto',
-                          border: 'dotted 1px black',
-                          margin: '3px',
+                          border: 'dotted 0.5px black',
+                          borderRadius: '10px',
+                          margin: '5px',
                           padding: '3px',
                           wordWrap: 'break-word',
                         }}>

@@ -10,6 +10,7 @@ import Moving from './components/Router.jsx';
 import logo from '../dist/fullLogo.png';
 import UserListings from './components/myListings.jsx';
 import registerServiceWorker from './registerServiceWorker.js';
+import Countdown from './components/Countdown.jsx';
 
 
 class App extends React.Component {
@@ -39,6 +40,9 @@ class App extends React.Component {
       return (
         <div className="user">
           <div className="nav"><img src={logo} className="logo"/></div>
+          <div style={{float: "right"}}>
+            <Countdown />
+          </div>
           <Moving logout={this.logout.bind(this)}/>
         </div>
       )
@@ -57,4 +61,4 @@ class App extends React.Component {
 }
 
 ReactDOM.render(<ParallaxProvider><App /></ParallaxProvider>, document.getElementById('app'));
-registerServiceWorker();
+
