@@ -249,11 +249,11 @@ export default class Inventory extends Component {
     return (
       <div className="container" style={{maxWidth: "1000px", margin: "50px"}}>
         <div className="edit">
-          <h1>Inventory</h1>
+          <h1>Get Packing</h1>
           <div className="inventory-search-container">
     
           <input
-            placeholder="search item"
+            placeholder="What are you looking for ?..."
             onChange={e => this.setState({search: e.target.value})}
             value={this.state.search}
           />
@@ -272,7 +272,7 @@ export default class Inventory extends Component {
             value={this.state.newItem}
           />
           <div>
-          <button onClick={() => this.clickItem()}>Submit</button>
+          <button onClick={() => this.clickItem()}>Add an Item</button>
           </div>
           </div>
           <span className="inventory-addBox-container">
@@ -282,7 +282,7 @@ export default class Inventory extends Component {
             value={this.state.newBox}
           />
           <div>
-          <button onClick={() => this.clickBox()}>Submit</button>
+          <button onClick={() => this.clickBox()}>Create a Box</button>
           </div>
           </span>
           {
@@ -335,13 +335,14 @@ export default class Inventory extends Component {
                     height: 'auto',
                     minHeight: '200px',
                     backgroundColor: "#FFE4A8",
-                    borderRadius: '5px'
+                    borderRadius: '5px',
+                    padding: '10px'
                   }}
                   id={itm}
                   types={['item']}
                   onDrop={e => this.onDrop(e, itm)}>
                   <div>
-                    name of box: {itm}{' '}
+                    Box: {itm}{' '}
                     <FaClose onClick={() => this.handleDeleteBox(itm)} />
                   </div>
                   {this.state.listBox[itm].map((each, k) => (

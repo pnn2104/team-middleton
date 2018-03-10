@@ -345,6 +345,25 @@ button {
     color: white;
     position: relative;
 }
+
+.edit{
+	left: 40%;
+    position: relative;
+    border: 3px solid;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 15px;
+    /* width: 60%; */
+    text-align: center;
+}
+
+.edit h1{
+	margin-bottom: -5px;
+}
+
+svg{
+	float: right;
+}
 .inventory{
 	left: 15%;
     position: relative;
@@ -356,8 +375,7 @@ button {
     border-radius: 4px;
     box-sizing: border-box;
     position: relative;
-    left: 2%;
-    margin-right: 4.5%;
+    margin-right: 6%;
 }
 
 .inventory-addItem-container{
@@ -443,7 +461,8 @@ html.modal-slideshow--opened {
 	height: 50px;
 	background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAEYSURBVGiB7ZjBDoIwDIbVA/HxeBRu+Fh40bfz98CaLM2sA1pWtN+RbH/7pSyEnU5BEARBEPwxADoAvWF+D6CzyqciHYA7Zm4G+UPKfgK4audTkVwC2jKZBExl0shLDArZXIKweYVTwVeh4OrJCBKjZu+fCqvINJNgDWySaS7BGlkl40aCNbRIxp0Ea6xKxq0EUSPjXoKQZA4jQQgNl9j8ITVFmIz/SXC+yJhIXCxCE+eFz31ReU7UfwFUqZQgfB52QWIUzoyvyUgSbI1fmRoJttafzBIJtsePzBoJtre9zBYJltFORkOCZe0voynBMveTwa9cB2G+oJu0JlHI55N5wPi2cdKWyPJJxk4iK3b8S+wgCIIgCJzzBnscOF5SUB7qAAAAAElFTkSuQmCC) no-repeat;
 	background-size: 50px 50px;
-	cursor: pointer; }
+	cursor: pointer; 
+}
   
   .modal-slideshow__slide {
 	display: block;
