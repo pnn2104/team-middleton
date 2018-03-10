@@ -139,7 +139,7 @@ export default class Input extends Component {
         				<input name="img" type="file" multiple onChange={this.handlePhotoFile}/>
         			</div>
         			<div>
-						<button className="form-submit" onClick={this.handleSubmit}> Click Me</button>
+						<button className="form-submit" onClick={this.handleSubmit}> Submit</button>
 					</div>
 				</form>
 			</div>
