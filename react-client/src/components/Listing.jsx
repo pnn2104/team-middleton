@@ -10,8 +10,8 @@ class Listing extends React.Component {
     return (
       <div className="listing">
         <div className="listing-title" onClick={() => this.props.openSlideShow(this.props.listing)}>
-          <a target="_blank" href={this.props.listing.image[0]}>
-            <img src={this.props.listing.image[0]} />
+          <a target="_blank" href={this.props.listing.image}>
+            <img src={this.props.listing.image} />
           </a>
           <h3>{this.props.listing.title}</h3>
         </div>
