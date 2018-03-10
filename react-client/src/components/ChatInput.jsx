@@ -1,9 +1,11 @@
 import React from 'react';
 import { MESSAGE_SENT } from '../events.js';
+import axios from 'axios';
 class ChatInput extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			//messagesToBePersisted: [],
 			message: ''
 		}
 		this.changeHandler = this.changeHandler.bind(this);
@@ -22,9 +24,22 @@ class ChatInput extends React.Component {
 	submitHandler(event) {
 		event.preventDefault()
 		this.sendMessage();
-		// this.setState({
-		// 	message: ''
-		// })
+		this.props.updateMessage(this.state.message);
+		this.setState({
+			message: ''
+		})
+		//persisting the messages send to a specific receiver
+		//const messagesToBePersisted = this.state.messagesToBePersisted.slice();
+		//messagesToBePersisted.push(this.state.message);
+		// axios.post('/persistMessages',
+		// 	{
+		// 		message: this.state.message,
+		// 		receiver: this.props.receiver,
+		// 		sender: this.props.sender
+		// 	})
+		// 	.then((err) => {
+		// 		if (err) throw err
+		// 	})
 	}
 
 	sendMessage() {
@@ -34,7 +49,7 @@ class ChatInput extends React.Component {
 
 	changeHandler(event) {
 		this.setState({
-			message: event.target.value 
+			message: event.target.value
 		})
 	}
 
@@ -43,8 +58,8 @@ class ChatInput extends React.Component {
 		return (
 			<div className="chat-input">
 				<form onSubmit={this.submitHandler}>
-					<input type="text/submit" onChange={(e) => this.changeHandler(e) }></input>
-					<input type="submit" value="Submit"></input>
+					<input className="chat-input-text" value={this.state.message} type="text/submit" placeholder={`I am ${this.props.sender}`} onChange={(e) => this.changeHandler(e)}></input>
+					<input className="chat-input-button" type="submit" value="Submit"></input>
 				</form>
 			</div>
 		)

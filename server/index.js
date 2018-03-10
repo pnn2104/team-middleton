@@ -448,25 +448,22 @@ app.get('*', function(req, res) {
 });
 
 
+//saving messages to the db
+// app.post('/persistMessages', (req, res) => {
+//   //console.log('server side messages to be persisted', req.body);
+//   var params = [req.body.sender, req.body.receiver, req.body.message];
+//   var queryString = "INSERT INTO chat (sender, receiver, message) VALUES (?, ?, ?)"
+//   db.connection.query(queryString, params, function(err) {
+//     if (err) throw err;
+//     res.status(201).end();
+//   })
+// })
 
-//socketIO original
-// var server = app.listen(process.env.PORT || 3000, function() {
-//   console.log(`listening on port ${process.env.PORT || '3000'}!`);
-// });
-// io = socketIO(server);
+// app.get('/getChatMessages', (req, res) => {
+//   console.log("to /getChatMessages", res)
+//   res.send(0)
+// })
+
+
 io.on('connection', (socket) =>  {SocketManager(socket, io)})
 server.listen(3000);
-console.log('iooooo', io);
-//var io = module.exports.io = require('socket.io')(server)
-//when connection is established, io send a socket to a function
-//and the function here is SocketManager
-
-
-//console.log('io', io)
-// module.exports = {
-//   io
-// }
-
-// exports = module.exports = {}
-// exports.io = io;
-//module.exports = io;

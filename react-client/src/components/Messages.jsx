@@ -4,25 +4,30 @@ import Message from './Message.jsx';
 class Messages extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			messages: []
-		}
+		this.scrollDown = this.scrollDown.bind(this);
 	}
-	// componentDidMount() {
-	// 	this.setState({
-	// 		messages: this.props.chats.messages
-	// 	})
-	// }
+
+	scrollDown() {
+		const {container} = this.refs;
+		container.scrollTop = container.scrollHeight;
+	}
+
+	componentDidMount() {
+		this.scrollDown()
+	}
+
+	componentDidUpdate() {
+		this.scrollDown()
+	}
 
 	render() {
-		// let messages = this.props.chat? this.props.chats.messages : []
 		return (
-			<div className="chat-messages">
-			{/* {this.props.messages.map((message) => {
+			<div className="chat-messages" ref="container">
+			{this.props.activeChat.messages ? this.props.activeChat.messages.map((message, i) => {
 				return (
-					<Message message={message}/>
+					<Message key={i} message={message}/>
 				)
-			})} */}
+			}) : ''}
 			</div>
 		)
 	}

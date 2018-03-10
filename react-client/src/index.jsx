@@ -57,4 +57,4 @@ class App extends React.Component {
 }
 
 ReactDOM.render(<ParallaxProvider><App /></ParallaxProvider>, document.getElementById('app'));
-//registerServiceWorker();
+registerServiceWorker();

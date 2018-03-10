@@ -25,7 +25,7 @@ const {
 let connectedUsers = {};
 
 module.exports = function (socket, io) {
-	console.log("Socket ID:" + socket.id)
+	//console.log("Socket ID:" + socket.id)
 	let sendMessageToChatFromUser;
 
 	//user connect with username
@@ -43,13 +43,13 @@ module.exports = function (socket, io) {
 	//on private messaging
 	socket.on(PRIVATE_MESSAGE, (data) => {
 		const { receiver, sender } = data;
-		console.log('data: ', data);
+		//console.log('data: ', data);
 		//console.log('receiver', receiver, 'sender', sender);
-		//console.log("connectedUsernames", connectedUsernames);
+		//console.log("connectedUsernames", connectedUsers);
 		const connectedUsernames = Object.keys(connectedUsers);
 		if (connectedUsernames.indexOf(data.receiver) !== -1) {
 			const newChat = createChat({ name: `${receiver}&${sender}`, users: [receiver, sender] })
-			console.log("newChat", newChat);
+			//console.log("newChat", newChat);
 			const receiverSocket = connectedUsers[receiver].socketId;
 			socket.to(receiverSocket).emit(PRIVATE_MESSAGE, newChat);
 			 //emit to the socket of the other person connected in connected users
@@ -58,11 +58,11 @@ module.exports = function (socket, io) {
 			socket.emit(PRIVATE_MESSAGE, newChat)
 			sendMessageToChatFromUser = sendMessageToChat(newChat.name, sender, io)
 			//saving chat Id to database table "chat", schema below 
-			let queryString = "INSERT IGNORE INTO chat (chatId, users) VALUES (?, ?)";
-			let params = [newChat.id, JSON.stringify(newChat.users)];
-			db.connection.query(queryString, params, function (err) {
-				if (err) throw err;
-			})
+			// let queryString = "INSERT IGNORE INTO chat (chatId, users) VALUES (?, ?)";
+			// let params = [newChat.id, JSON.stringify(newChat.users)];
+			// db.connection.query(queryString, params, function (err) {
+			// 	if (err) throw err;
+			// })
 			//console.log('params', params);
 			//if the receiver is not connected
 		} else if (connectedUsernames.indexOf(data.receiver) === -1 && data.receiver !== data.sender) {
@@ -71,16 +71,16 @@ module.exports = function (socket, io) {
 			//console.log('receiver not connected chat', newChat);
 			//save it to the database
 			sendMessageToChatFromUser = sendMessageToChat(newChat.name, sender, io)
-			let queryString = "INSERT IGNORE INTO chat (chatId, users) VALUES (?, ?)";
-			let params = [newChat.id, JSON.stringify(newChat.users)];
-			db.connection.query(queryString, params, function (err) {
-				if (err) throw err;
-			})
+			// let queryString = "INSERT IGNORE INTO chat (chatId, users) VALUES (?, ?)";
+			// let params = [newChat.id, JSON.stringify(newChat.users)];
+			// db.connection.query(queryString, params, function (err) {
+			// 	if (err) throw err;
+			// })
 		}
 	})
 
 	socket.on(MESSAGE_SENT, ({ chatId, message }) => {
-		console.log("chatId", chatId, "message", message);
+		//console.log("chatId", chatId, "message", message);
 		sendMessageToChatFromUser(chatId, message);
 	})
 }
@@ -89,9 +89,9 @@ module.exports = function (socket, io) {
 //return a function that take a chat id and a message
 //and then emit a broadcast to the chat id
 function sendMessageToChat(chatname, sender, io) {
-	console.log('sender', sender, "chatname", chatname);
+	//console.log('sender', sender, "chatname", chatname);
 	return (chatId, message) => {
-		console.log("SocketMager chatId", chatId, 'message',  message);
+		//console.log("SocketMager chatId", chatId, 'message',  message);
 		//console.log("io", io)
 		// io.in(chatname).emit(`${MESSAGE_RECEIVED}-${chatId}`, createMessage({ message, sender })); 
 		io.emit(`${MESSAGE_RECEIVED}-${chatId}`, createMessage({ message, sender }))
