@@ -337,6 +337,7 @@ const parseWeatherData = data => data.data;
 
 app.post('/weather', (request, response) => {
   const {lat, lng, dateInUnix} = request.body;
+  console.log('in weatehr', lat, lng, dateInUnix)
   const url = `https://api.darksky.net/forecast/${
     process.env.DARK_SKY_API_KEY
   }/${lat},${lng},${dateInUnix}`;
@@ -361,11 +362,11 @@ app.post('/geocoder', (request, response) => {
 });
 
 app.post('/widget', (request, response) => {
-  const {user, moveoutday, lat, lng, location} = request.body;
+  const {user, moveoutday, lat, lng, location, toUpdate} = request.body;
   db.insertMovingInfo({user, moveoutday, lat, lng, location}, (err, data) => {
     response.send({msg: 'Inserted!'});
   })
-})
+});
 
 app.post('/movingInfo', (request, response) => {
   const { user } = request.body;
@@ -373,6 +374,17 @@ app.post('/movingInfo', (request, response) => {
     response.send(data);
   })
 })
+
+app.delete('/movingInfo', (request, response) => {
+  const {user} = request.query;
+  console.log(user)
+  db.deleteMovingInfo(user, (err, data) => {
+    if (err) {
+      throw err;
+    }
+    response.send({msg: 'Successfully Deleted!'});
+  });
+});
 
 app.post('/getItemsNoBox', (req, res) => {
   var {user} = req.body;

@@ -29,16 +29,22 @@ class Countdown extends Component {
   handleSubmit(ev) {
     ev.preventDefault();
     if (ev.target.value === 'Edit') {
+      axios.delete('/movingInfo', { params: {user: this.state.user} });
       this.setState({edit: true, moveoutday: '', location: ''});
     } else {
       let targetDate = moment(this.state.moveoutday);
       // Get the geocoder information
       this.getCoordinates(coordinates => {
+        console.log('1 GEtting cooridngates');
         const {lat, lng} = coordinates;
         this.setState({lat, lng, edit: false}, () => {
-          this.persistData((err, data) => {
-            this.updateCountdown(targetDate);
-            this.updateWeather();
+          console.log('2 setting state')
+          this.persistData(data => {
+            console.log('3 persisting data')
+            this.updateCountdown(targetDate, () => {
+              console.log('4 persisting data');
+              this.updateWeather();
+            });
           });
         });
       });
@@ -58,9 +64,10 @@ class Countdown extends Component {
         lat: this.state.lat,
         lng: this.state.lng,
       })
-      .then(results =>
-        this.setState({weatherData: results.data.currently.summary}),
-      );
+      .then(results => {
+        console.log(results)
+        this.setState({weatherData: results.data.currently.summary})
+      });
   }
 
   persistData(callback) {
@@ -70,18 +77,17 @@ class Countdown extends Component {
       lat: this.state.lat,
       lng: this.state.lng,
       location: this.state.location,
-    });
+    }).then(results => callback(results));
   }
 
-  updateCountdown(targetDate) {
+  updateCountdown(targetDate, cb) {
     let currentDate = moment();
     let differenceDate = moment.duration(currentDate.diff(targetDate));
     let countdownString = differenceDate.humanize();
     this.setState({
-      //moveoutday: '',
       countdownString,
       edit: false,
-    });
+    }, cb);
   }
 
   componentWillMount() {

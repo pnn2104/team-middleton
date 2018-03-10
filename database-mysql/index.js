@@ -16,7 +16,21 @@ const getMovingInfo = (user, cb) => {
       if (err) {
         throw err;
       }
-      console.log(`[database] getMovingInfo: ${data}`);
+      console.log(`[database] getMovingInfo:`, data);
+      cb(err, data);
+    },
+  );
+};
+
+const deleteMovingInfo = (user, cb) => {
+  console.log(user);
+  connection.query(
+    `DELETE FROM movingday WHERE user="${user}";`,
+    (err, data) => {
+      if (err) {
+        throw err;
+      }
+      console.log(`[database] deleteMovingInfo:`, data);
       cb(err, data);
     },
   );
@@ -158,6 +172,7 @@ connection.connect(err => {
 module.exports = {
   insertMovingInfo,
   getMovingInfo,
+  deleteMovingInfo,
   connection,
   getItemsNoBox,
   postItemNoBox,
