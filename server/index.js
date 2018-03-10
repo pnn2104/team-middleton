@@ -290,7 +290,9 @@ app.get('/allPosts', checkSession, (req, res) => {
       const parsedData = JSON.parse(JSON.stringify(data));
       //console.log(parsedData)
       for (let datum of parsedData) {
-        datum.image = data.image? datum.image.slice(1, -1).split(',') : data.image;
+	if(datum.image !== null){
+       	   datum.image = data.image? datum.image.slice(1, -1).split(',') : data.image;
+	}
       }
       //console.log(parsedData)
       res.status(200).send(parsedData);
