@@ -250,25 +250,41 @@ export default class Inventory extends Component {
       <div className="container" style={{maxWidth: "1000px", margin: "50px"}}>
         <div className="edit">
           <h1>Inventory</h1>
+          <div className="inventory-search-container">
+    
           <input
             placeholder="search item"
             onChange={e => this.setState({search: e.target.value})}
             value={this.state.search}
           />
+          <span>
           <button onClick={() => this.clickSearch()}>Search</button>
+          </span>
+          <span>
           <button onClick={() => this.deleteSearch()}>Delete query</button>
+          </span>
+           </div>
+           <div className="inventory-addItem-container">
           <input
+
             placeholder="add item"
             onChange={e => this.setState({newItem: e.target.value})}
             value={this.state.newItem}
           />
+          <div>
           <button onClick={() => this.clickItem()}>Submit</button>
+          </div>
+          </div>
+          <span className="inventory-addBox-container">
           <input
             placeholder="add box name"
             onChange={e => this.setState({newBox: e.target.value})}
             value={this.state.newBox}
           />
+          <div>
           <button onClick={() => this.clickBox()}>Submit</button>
+          </div>
+          </span>
           {
             <Droppable
               style={{
