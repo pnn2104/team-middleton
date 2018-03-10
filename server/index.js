@@ -337,6 +337,7 @@ const parseWeatherData = data => data.data;
 
 app.post('/weather', (request, response) => {
   const {lat, lng, dateInUnix} = request.body;
+  console.log('in weatehr', lat, lng, dateInUnix)
   const url = `https://api.darksky.net/forecast/${
     process.env.DARK_SKY_API_KEY
   }/${lat},${lng},${dateInUnix}`;
@@ -350,14 +351,39 @@ app.post('/weather', (request, response) => {
 });
 
 app.post('/geocoder', (request, response) => {
-  const {zip} = request.body;
+  const {location} = request.body;
   const base = `https://maps.googleapis.com/maps/api/geocode/json`;
-  const extras = `?address=${zip}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+  const extras = `?address=${location}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
   const url = base + extras;
   axios
     .get(url)
     .then(results => response.send(results.data.results[0].geometry.location))
     .catch(err => console.log(err));
+});
+
+app.post('/widget', (request, response) => {
+  const {user, moveoutday, lat, lng, location, toUpdate} = request.body;
+  db.insertMovingInfo({user, moveoutday, lat, lng, location}, (err, data) => {
+    response.send({msg: 'Inserted!'});
+  })
+});
+
+app.post('/movingInfo', (request, response) => {
+  const { user } = request.body;
+  db.getMovingInfo(user, (err, data) => {
+    response.send(data);
+  })
+})
+
+app.delete('/movingInfo', (request, response) => {
+  const {user} = request.query;
+  console.log(user)
+  db.deleteMovingInfo(user, (err, data) => {
+    if (err) {
+      throw err;
+    }
+    response.send({msg: 'Successfully Deleted!'});
+  });
 });
 
 app.post('/getItemsNoBox', (req, res) => {

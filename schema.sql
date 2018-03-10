@@ -46,10 +46,18 @@ CREATE TABLE communitypost (
   PRIMARY KEY (id)
 );
 
+CREATE TABLE movingday (
+  user varchar(255) NOT NULL,
+  moveoutday varchar(255),
+  lat float,
+  lng float,
+  location varchar(255)
+);
+
 CREATE TABLE chat (
   chatId varchar(255) NOT NULL,
   users varchar(500) NOT NULL
-)
+);
 
 create table boxes (
 	id int not null AUTO_INCREMENT,
