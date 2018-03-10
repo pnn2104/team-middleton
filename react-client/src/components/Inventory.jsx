@@ -290,9 +290,11 @@ export default class Inventory extends Component {
               style={{
                 border: 'solid 1px black',
                 height: '100px',
-                width: '80%',
+                width: '375px',
+                left: '2%',
+                borderRadius: '5px',
+                backgroundColor: "#FFE4A8",
                 margin: '5px',
-                backgroundColor: 'lightyellow',
                 padding: '5px',
                 minHeight: '100px',
                 height: 'auto',
@@ -332,6 +334,8 @@ export default class Inventory extends Component {
                     margin: '5px',
                     height: 'auto',
                     minHeight: '200px',
+                    backgroundColor: "#FFE4A8",
+                    borderRadius: '5px'
                   }}
                   id={itm}
                   types={['item']}
