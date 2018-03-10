@@ -345,15 +345,19 @@ button {
     color: white;
     position: relative;
 }
-
+.inventory{
+	left: 15%;
+    position: relative;
+    margin-top: 42px;
+}
 .inventory-search-container input{
     padding: 12px 20px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
     position: relative;
-    left: 3%;
-    margin-right: 9%;
+    left: 2%;
+    margin-right: 4.5%;
 }
 
 .inventory-addItem-container{
