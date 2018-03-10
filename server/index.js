@@ -455,8 +455,7 @@ app.get('*', function(req, res) {
 // });
 // io = socketIO(server);
 io.on('connection', (socket) =>  {SocketManager(socket, io)})
-server.listen(3000);
-console.log('iooooo', io);
+server.listen(process.env.PORT || 3000);
 //var io = module.exports.io = require('socket.io')(server)
 //when connection is established, io send a socket to a function
 //and the function here is SocketManager
