@@ -16,15 +16,15 @@ var SocketManager = require('./socketManager');
 //**************** */
 //var io = require('socket.io');
 aws.config.update({
-    secretAccessKey: '/Y+qnTBGnfpFiRWoJh6X/Mbl19O4cAut3vpS1//U',
-    accessKeyId: 'AKIAJXYWBNHV4ON7KGGQ',
-    region: 'us-east-1'
+    secretAccessKey: process.env.S3_ACCESS_KEY,
+    accessKeyId: process.env.ACCESS_KEY_ID,
+    region: process.env.REGION
 });
 const s3 = new aws.S3();
 const upload = multer({
   storage: multerS3({
     s3: s3,
-    bucket: 'postlistingimages',
+    bucket: process.env.BUCKET_NAME,
     key: function(req, file, cb) {
       cb(null, `${new Date()}-${file.originalname}`);
     }
