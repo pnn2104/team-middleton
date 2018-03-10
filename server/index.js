@@ -291,7 +291,7 @@ app.get('/allPosts', checkSession, (req, res) => {
       //console.log(parsedData)
       for (let datum of parsedData) {
 	if(datum.image !== null){
-       	   datum.image = data.image? datum.image.slice(1, -1).split(',')
+       	   datum.image = datum.image.slice(1, -1).split(',')
 	}
       }
       //console.log(parsedData)
