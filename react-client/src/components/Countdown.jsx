@@ -29,7 +29,7 @@ class Countdown extends Component {
   handleSubmit(ev) {
     ev.preventDefault();
     if (ev.target.value === 'Edit') {
-      axios.delete('/movingInfo', { params: {user: this.state.user} });
+      axios.delete('/movingInfo', {params: {user: this.state.user}});
       this.setState({edit: true, moveoutday: '', location: ''});
     } else {
       let targetDate = moment(this.state.moveoutday);
@@ -38,9 +38,9 @@ class Countdown extends Component {
         console.log('1 GEtting cooridngates');
         const {lat, lng} = coordinates;
         this.setState({lat, lng, edit: false}, () => {
-          console.log('2 setting state')
+          console.log('2 setting state');
           this.persistData(data => {
-            console.log('3 persisting data')
+            console.log('3 persisting data');
             this.updateCountdown(targetDate, () => {
               console.log('4 persisting data');
               this.updateWeather();
@@ -65,29 +65,34 @@ class Countdown extends Component {
         lng: this.state.lng,
       })
       .then(results => {
-        console.log(results)
-        this.setState({weatherData: results.data.currently.summary})
+        console.log(results);
+        this.setState({weatherData: results.data.currently.summary});
       });
   }
 
   persistData(callback) {
-    axios.post('/widget', {
-      user: this.state.user,
-      moveoutday: this.state.moveoutday,
-      lat: this.state.lat,
-      lng: this.state.lng,
-      location: this.state.location,
-    }).then(results => callback(results));
+    axios
+      .post('/widget', {
+        user: this.state.user,
+        moveoutday: this.state.moveoutday,
+        lat: this.state.lat,
+        lng: this.state.lng,
+        location: this.state.location,
+      })
+      .then(results => callback(results));
   }
 
   updateCountdown(targetDate, cb) {
     let currentDate = moment();
     let differenceDate = moment.duration(currentDate.diff(targetDate));
     let countdownString = differenceDate.humanize();
-    this.setState({
-      countdownString,
-      edit: false,
-    }, cb);
+    this.setState(
+      {
+        countdownString,
+        edit: false,
+      },
+      cb,
+    );
   }
 
   componentWillMount() {
@@ -117,6 +122,7 @@ class Countdown extends Component {
   render() {
     return (
       <div style={{borderRadius: '2px'}}>
+        <h4>Countdown to Move</h4>
         {this.state.edit ? (
           <div>
             <input
@@ -132,9 +138,11 @@ class Countdown extends Component {
             <input type="submit" value="Button" onClick={this.handleSubmit} />
           </div>
         ) : (
-          <div>
-            <h4>{this.state.countdownString}</h4>
-            <h4>Weather will be {this.state.weatherData}</h4>
+          <div style={{maxWidth: '400px'}}>
+            <p>
+              {this.state.countdownString} until your planned move out. The
+              weather will be {this.state.weatherData}.
+            </p>
             <input type="submit" value="Edit" onClick={this.handleSubmit} />
           </div>
         )}
