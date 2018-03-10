@@ -350,15 +350,29 @@ app.post('/weather', (request, response) => {
 });
 
 app.post('/geocoder', (request, response) => {
-  const {zip} = request.body;
+  const {location} = request.body;
   const base = `https://maps.googleapis.com/maps/api/geocode/json`;
-  const extras = `?address=${zip}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+  const extras = `?address=${location}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
   const url = base + extras;
   axios
     .get(url)
     .then(results => response.send(results.data.results[0].geometry.location))
     .catch(err => console.log(err));
 });
+
+app.post('/widget', (request, response) => {
+  const {user, moveoutday, lat, lng, location} = request.body;
+  db.insertMovingInfo({user, moveoutday, lat, lng, location}, (err, data) => {
+    response.send({msg: 'Inserted!'});
+  })
+})
+
+app.post('/movingInfo', (request, response) => {
+  const { user } = request.body;
+  db.getMovingInfo(user, (err, data) => {
+    response.send(data);
+  })
+})
 
 app.post('/getItemsNoBox', (req, res) => {
   var {user} = req.body;

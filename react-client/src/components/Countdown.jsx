@@ -10,56 +10,102 @@ class Countdown extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.updateWeather = this.updateWeather.bind(this);
     this.updateCountdown = this.updateCountdown.bind(this);
+    this.getCoordinates = this.getCoordinates.bind(this);
+    this.persistData = this.persistData.bind(this);
 
-    // TODO: ZIP can be obtained from user model
     this.state = {
-      edit: true,
-      date: null,
+      edit: false,
+      user: '',
+      moveoutday: null,
+      lat: null,
+      lng: null,
+      location: '',
       countdownString: '',
-      zip: '',
       weatherData: null,
     };
   }
 
-  // Submit zip and date.
-  // TODO: zip -> weather API data
+  // Submit location and moveoutday.
   handleSubmit(ev) {
     ev.preventDefault();
     if (ev.target.value === 'Edit') {
-      this.setState({edit: true, date: ''});
+      this.setState({edit: true, moveoutday: '', location: ''});
     } else {
-      let targetDate = moment(this.state.date);
-      this.updateCountdown(targetDate);
-      this.updateWeather(targetDate);
+      let targetDate = moment(this.state.moveoutday);
+      // Get the geocoder information
+      this.getCoordinates(coordinates => {
+        const {lat, lng} = coordinates;
+        this.setState({lat, lng, edit: false}, () => {
+          this.persistData((err, data) => {
+            this.updateCountdown(targetDate);
+            this.updateWeather();
+          });
+        });
+      });
     }
   }
 
+  getCoordinates(callback) {
+    axios.post('/geocoder', {location: this.state.location}).then(results => {
+      callback(results.data);
+    });
+  }
+
+  updateWeather() {
+    axios
+      .post('/weather', {
+        dateInUnix: moment(this.state.moveoutday).unix(),
+        lat: this.state.lat,
+        lng: this.state.lng,
+      })
+      .then(results =>
+        this.setState({weatherData: results.data.currently.summary}),
+      );
+  }
+
+  persistData(callback) {
+    axios.post('/widget', {
+      user: this.state.user,
+      moveoutday: this.state.moveoutday,
+      lat: this.state.lat,
+      lng: this.state.lng,
+      location: this.state.location,
+    });
+  }
+
   updateCountdown(targetDate) {
-    // date -> humanized countdown date string.
     let currentDate = moment();
     let differenceDate = moment.duration(currentDate.diff(targetDate));
     let countdownString = differenceDate.humanize();
     this.setState({
-      date: '',
+      //moveoutday: '',
       countdownString,
       edit: false,
     });
   }
 
-  updateWeather(date) {
-    //const isoDateString = date.toISOString();
-    const dateInUnix = date.unix();
-    axios.post('/geocoder', {zip: this.state.zip}).then(results =>
-      axios
-        .post('/weather', {
-          dateInUnix,
-          lat: results.data.lat,
-          lng: results.data.lng,
-        })
-        .then(results =>
-          this.setState({weatherData: results.data.currently.summary}),
-        ),
-    );
+  componentWillMount() {
+    // Once the comp is mounted, we need to check if the use has already given
+    // us their location and moveoutday.
+    this.setState({user: JSON.parse(sessionStorage.getItem('user'))}, () => {
+      console.log(`[componentWillMount] this.state.user: ${this.state.user}`);
+      axios.post('/movingInfo', {user: this.state.user}).then(results => {
+        console.log('results from call to /movingInfo', results.data);
+        if (results.data.length === 0) {
+          // No data persisted, so initialize in edit mode
+          this.setState({edit: true});
+        } else {
+          const {user, moveoutday, lat, lng, location} = results.data[0];
+          let targetDate = moment(moveoutday);
+          console.log(`[componentWillMount] moveoutday: ${moveoutday}`);
+          console.log(`[componentWillMount] lat: ${lat}`);
+          this.updateCountdown(targetDate);
+          this.setState({user, moveoutday, lat, lng, location}, () => {
+            this.updateWeather();
+          });
+        }
+      });
+    });
   }
 
   render() {
@@ -68,21 +114,21 @@ class Countdown extends Component {
         {this.state.edit ? (
           <div>
             <input
-              placeholder="zip"
+              placeholder="location"
               type="text"
-              onChange={ev => this.setState({zip: ev.target.value})}
+              onChange={ev => this.setState({location: ev.target.value})}
             />
             <input
-              placeholder="date"
+              placeholder="Move out Day"
               type="text"
-              onChange={ev => this.setState({date: ev.target.value})}
+              onChange={ev => this.setState({moveoutday: ev.target.value})}
             />
             <input type="submit" value="Button" onClick={this.handleSubmit} />
           </div>
         ) : (
           <div>
-            <h3>{this.state.countdownString}</h3>
-            <h3>Weather will be {this.state.weatherData}</h3>
+            <h4>{this.state.countdownString}</h4>
+            <h4>Weather will be {this.state.weatherData}</h4>
             <input type="submit" value="Edit" onClick={this.handleSubmit} />
           </div>
         )}
