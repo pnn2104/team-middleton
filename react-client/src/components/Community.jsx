@@ -1,15 +1,15 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import postDummyData from './postDummyData.jsx';
 import Listing from './Listing.jsx'
 import ListingModal from './ListingModal.jsx';
 import ChatApp from './ChatApp.jsx';
 import axios from 'axios';
 import io from 'socket.io-client';
-import { USER_CONNECTED, PRIVATE_MESSAGE, MESSAGE_SENT, MESSAGE_RECEIVED} from '../events.js';
+import { USER_CONNECTED, PRIVATE_MESSAGE, MESSAGE_SENT, MESSAGE_RECEIVED } from '../events.js';
 
 const socketUrl = "http://localhost:3000/"
 export default class CommunityBoard extends Component {
-	constructor(props){
+	constructor(props) {
 		super(props)
 		this.state = {
 			listings: [],
@@ -19,6 +19,7 @@ export default class CommunityBoard extends Component {
 			socket: null,
 			user: null,
 			chats: [],
+			activeChat: {},
 			receiver: null,
 			chatId: null
 			//showChats: false //open the chatbox without contacting anyone;
@@ -39,7 +40,7 @@ export default class CommunityBoard extends Component {
 
 	componentDidMount() {
 		this.getAllPosting()
-		//init socket here	
+		//get from database anything that receiver is the same with user 
 	}
 
 	componentWillMount() {
@@ -49,7 +50,7 @@ export default class CommunityBoard extends Component {
 	initSocket() {
 		//socket Url here is just local host for now
 		const socket = io(socketUrl);
-		socket.on('connect', function() {
+		socket.on('connect', function () {
 			console.log('connected');
 		})
 		this.setState({
@@ -67,15 +68,15 @@ export default class CommunityBoard extends Component {
 		this.setState({
 			user: username
 		}, () => {
-			socket.emit(USER_CONNECTED, {name: this.state.user});
+			socket.emit(USER_CONNECTED, { name: this.state.user });
 			//console.log('setState user', this.state.user);
 		});
-	} 
+	}
 
 	initializePrivateChat() {
 		//on private message, add chat 
 		this.state.socket.on(PRIVATE_MESSAGE, this.addChat);
-		const data = {receiver: this.state.receiver, sender: this.state.user};
+		const data = { receiver: this.state.receiver, sender: this.state.user };
 		console.log('data: ', data);
 		this.state.socket.emit(PRIVATE_MESSAGE, data);
 		//console.log('newChat', newChat);
@@ -86,19 +87,24 @@ export default class CommunityBoard extends Component {
 	addChat(chat) {
 		console.log('client side chat', chat);
 		const socket = this.state.socket
+		//if the receiver is online
 		this.setState({
 			chatId: chat.id
 		})
 		//shallow copies of array of chats
 		const chats = this.state.chats.slice();
 		chats.push(chat);
-		console.log('chats', chats);
-		this.setState({chats})
+		//console.log('chats', chats);
+		this.setState({ chats: chats, activeChat: chat })
 
 		const messageEvent = `${MESSAGE_RECEIVED}-${chat.id}`
 		socket.on(messageEvent, this.addMessageToChat(chat.id))
+		// else if (chat.id === null) {
+		// 	console.log('chatttt when the receiver is offline', chat);
+		// 	//const messageUnreadEvent = `${USER_OFFLINE}`
+		// }
 	}
-	
+
 	addMessageToChat(chatId) {
 		//looping thru the chats array
 		return (message) => {
@@ -112,40 +118,39 @@ export default class CommunityBoard extends Component {
 			})
 			this.setState({
 				chats: newChats
+			}, () => {
+				console.log('this.state.chats', this.state.chats)
+				//console.log('this.state.activeChat', this.state.activeChat)
 			})
 		}
-			//for each chat 
-				//check for chat id
-					//push message to chat.messages
+		//for each chat 
+		//check for chat id
+		//push message to chat.messages
 		//set state of the chat again
 	}
 
 	sendMessage(chatId, message) {
 		console.log("chatId", chatId, "message", message)
 		const socket = this.state.socket;
-		socket.emit(MESSAGE_SENT, {chatId, message})
-	} 
+		socket.emit(MESSAGE_SENT, { chatId, message })
+	}
 
 	getAllPosting() {
 		axios.get('/allPosts')
-		.then((res) => {
-			console.log('client data', res.data)
-			this.setState({
-				listings: res.data
-				//receiver state property
+			.then((res) => {
+				console.log('client data', res.data)
+				this.setState({
+					listings: res.data
+					//receiver state property
+				})
 			})
-		})
 	}
 
 	showChatWithoutContact() {
 		this.setState({
 			openChat: !this.state.openChat,
-			//when the chat box is open, receiver state property is also set to the receiver that was clicked on
-			//set receivers to 
-			//receiver: event.target.value
 		}, () => {
 			this.initializePrivateChat()
-			//want to include addChat here
 		})
 	}
 	//toggle state open chat for conditional rendering of the chat box in community component
@@ -178,23 +183,27 @@ export default class CommunityBoard extends Component {
 	render() {
 		//const chatNoContact = this.state.showChats ? <ChatApp /> : <div></div>
 		//passdown the receiver to the ChapApp
-		const chat = this.state.openChat ? <ChatApp initializePrivateChat={this.initializePrivateChat} 
-																								openChat={this.state.openChat} receiver={this.state.receiver} 
-																								socket={this.state.socket} user={this.state.user}
-																								chats={this.state.chats}
-																								sendMessage={this.sendMessage}
-																								chatId={this.state.chatId}
-																			 /> : <div></div>
+		const chat = this.state.openChat ? 
+			<ChatApp
+				openChat={this.state.openChat}
+				activeChat={this.state.activeChat}
+				chatname={this.state.receiver + ' & ' + this.state.user}
+				receiver={this.state.receiver}
+				user={this.state.user}
+				socket={this.state.socket} user={this.state.user}
+				chats={this.state.chats}
+				sendMessage={this.sendMessage}
+				chatId={this.state.chatId}
+			/> : <div></div>
 		//rendering the modal that displays the listings' pictures
 		if (this.state.open) {
-			return <ListingModal slidesMedia={this.state.slidesMedia} open={this.state.open} handleClose={this.handleClose}/>
-		} 
+			return <ListingModal slidesMedia={this.state.slidesMedia} open={this.state.open} handleClose={this.handleClose} />
+		}
 		return (
-			<div className="community-board">	
+			<div className="community-board">
 				{this.state.listings.map((listing, i) => {
-					{console.log('this.state.listings: ', this.state.listings)}
 					return (
-						<Listing key={i} listing={listing} openSlideShow={this.openSlideShow} toggleChatBox={this.toggleChatBox}/>
+						<Listing key={i} listing={listing} openSlideShow={this.openSlideShow} toggleChatBox={this.toggleChatBox} />
 					)
 				})}
 				{chat}

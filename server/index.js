@@ -473,25 +473,7 @@ app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, '../react-client/dist/index.html'));
 });
 
-
-
-//socketIO original
-// var server = app.listen(process.env.PORT || 3000, function() {
-//   console.log(`listening on port ${process.env.PORT || '3000'}!`);
-// });
-// io = socketIO(server);
 io.on('connection', (socket) =>  {SocketManager(socket, io)})
+
 server.listen(process.env.PORT || 3000);
-//var io = module.exports.io = require('socket.io')(server)
-//when connection is established, io send a socket to a function
-//and the function here is SocketManager
 
-
-//console.log('io', io)
-// module.exports = {
-//   io
-// }
-
-// exports = module.exports = {}
-// exports.io = io;
-//module.exports = io;
