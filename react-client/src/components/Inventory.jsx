@@ -355,8 +355,9 @@ export default class Inventory extends Component {
                         data={JSON.stringify({name: each, fromBox: itm})}
                         style={{
                           width: 'auto',
-                          border: 'dotted 1px black',
-                          margin: '3px',
+                          border: 'dotted 0.5px black',
+                          borderRadius: '10px',
+                          margin: '5px',
                           padding: '3px',
                           wordWrap: 'break-word',
                         }}>
