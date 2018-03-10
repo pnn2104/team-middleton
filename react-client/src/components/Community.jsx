@@ -49,7 +49,7 @@ export default class CommunityBoard extends Component {
 
 	initSocket() {
 		//socket Url here is just local host for now
-		const socket = io(socketUrl);
+		const socket = io();
 		socket.on('connect', function () {
 			console.log('connected');
 		})
