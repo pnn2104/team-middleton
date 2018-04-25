@@ -169,7 +169,7 @@ export default class CommunityBoard extends Component {
 
 	openSlideShow(target) {
 		this.setState({
-			open: !this.state.open,
+			open: true,
 			slidesMedia: target.image
 		});
 	}
@@ -183,6 +183,7 @@ export default class CommunityBoard extends Component {
 	render() {
 		//const chatNoContact = this.state.showChats ? <ChatApp /> : <div></div>
 		//passdown the receiver to the ChapApp
+		
 		const chat = this.state.openChat ? 
 			<ChatApp
 				openChat={this.state.openChat}

@@ -45,7 +45,7 @@ module.exports = function (socket, io) {
 		const { receiver, sender } = data;
 		//console.log('data: ', data);
 		//console.log('receiver', receiver, 'sender', sender);
-		//console.log("connectedUsernames", connectedUsers);
+		console.log("connectedUsernames", connectedUsers);
 		const connectedUsernames = Object.keys(connectedUsers);
 		if (connectedUsernames.indexOf(data.receiver) !== -1) {
 			const newChat = createChat({ name: `${receiver}&${sender}`, users: [receiver, sender] })
